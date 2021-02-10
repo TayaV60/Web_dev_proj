@@ -4,7 +4,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
 	header("Location: login.html");
 } else {    
 ?>
-// html dashboard is being desplayed (awaiting the collaborator to add)
+// html dashboard is being desplayed (awaiting the collaborator to add html dashboard code)
 // log-out icon at the top-right corner (ready to be added to dashboard-html at the upper right hand corner
 <?php
 }

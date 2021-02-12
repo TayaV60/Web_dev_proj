@@ -1,0 +1,24 @@
+- Restart httpd.conf
+
+	/etc/httpd/httpd.conf
+	
+	kill -HUP `pidof httpd`
+
+
+DocumentRoot is “/srv/httpd/htdocs” - This is the default directory from which web page documents such as HTML, CSS and PHP files are served.  
+
+
+ files.sh   - gets the files listed in
+ files.txt  -
+
+
+
+To push changes to linux server:
+
+1)  Run server from DWA directory
+
+2)  Run pull.sh from /srv/httpd/htdocs
+
+
+ 
+ 

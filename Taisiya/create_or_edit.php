@@ -37,7 +37,11 @@ include 'topmenu.php';
 
     <!-- the contents field -->
     <div class="main">
-        <h4>Create a template</h4>
+
+    <a href="create_template.php">Create new template</a>
+
+        <br>
+        <br>
         <table>
             <tr>
                 <td>CV</td>

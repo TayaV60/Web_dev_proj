@@ -98,7 +98,7 @@
         console.log(elements);
         console.log(elemArray);
     }
-
+                                // THIS FUNCTION IS A GOOD EXAMPLE - IT'S INDENTED PROPERLY AND SHOULD BE EASIER TO FIGURE OUT - TWO MORE ARE NEEDED: Radio Button x2 and x3
     function addElement2(){
         elemArray.push(2);
         elements++;
@@ -125,7 +125,7 @@
                 textarea.setAttribute('form', 'form0');
                 form.appendChild(textarea);
         
-        var cont = document.getElementById('cont');
+        var cont = document.getElementById('cont');               // 'cont' IS A CONTAINER IN WireFrame5.php TO HOLD THE ELEMENTS ADDED WITH THESE FUNCTIONS
         cont.appendChild(div);
 
         console.log(elements);

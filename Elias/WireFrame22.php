@@ -32,31 +32,23 @@
 
     <nav class="navbar navbar-inverse">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">HappyTech HR</a>
-           </div>
-          
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                <li><a href="WireFrame33.php">Feedback</a></li>
-                <li><a href="WireFrame11.php">Templates</a></li>
-                <li><a href="WireFrame22.php">Roles</a></li>
-                
-                </ul>
-                
-                <ul class="nav navbar-nav navbar-right">
-                    
-                    <li><a href="#contact"><em>{User's name here}</em></a></li>
-                    
-                </ul> 
-             
-            </div><!--/.nav-collapse -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="WireFrame00.php">HappyTech HR</a>
+          </div>
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li><a href="WireFrame33.php">Feedback</a></li>
+              <li><a href="WireFrame11.php">Templates</a></li>
+              <li class="active"><a href="#roles">Roles</a></li>
+              
+            </ul>
+          </div><!--/.nav-collapse -->
         </div>
     </nav>
 
@@ -67,32 +59,32 @@
 
       <!-- Main jumbotron for a primary marketing message or call to action -->
         <div class="jumbotron">
-            <h2 style="text-align:center">Main Menu</h2>
+            <h2 style="text-align:center">Roles & Candidates</h2>
         
         </div>
 
         <div class="page-header">
-            <h4><em>Select an option to get started..</em></h4>
+            <h4><em>Select an option to continue..</em></h4>
         </div>
     
     <div class="container">
         <div class="row">
             <div style="text-align:center" class="col-md-4">
-                <a href="WireFrame33.php">
-                <img  data-src="holder.js/200x200" src="bulletList.png" class="img-thumbnail" alt="A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera">
-                <h3> Give Feedback... </h3>
+                <a href="#">
+                <img  data-src="holder.js/200x200" src="vacancy.png" class="img-thumbnail" alt="New Template">
+                <h3> Vacancies </h3>
                 </a>
             </div>
             <div style="text-align:center" class="col-md-4">
-                <a href="WireFrame11.php">
-                <img data-src="holder.js/200x200" src="template.png" class="img-thumbnail" alt="A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera">
-                <h3> Templates... </h3>
+                <a href="#">
+                <img data-src="holder.js/200x200" src="candidates.png" class="img-thumbnail" alt="Edit Template">
+                <h3> Candidates </h3>
                 </a>
-            </div>
+            </div>                                                  <!--  Admin or maybe just two options   -->
             <div style="text-align:center" class="col-md-4">
-                <a href="WireFrame22.php">
-                <img data-src="holder.js/200x200" src="person.png" class="img-thumbnail" alt="A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera">
-                <h3> Roles & Candidates... </h3>
+                <a href="#">
+                <img data-src="holder.js/200x200" src="adminicon.png" class="img-thumbnail" alt="Delete Template">
+                <h3> Admin </h3>
                 </a>
             </div>
         </div>

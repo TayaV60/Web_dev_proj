@@ -71,7 +71,7 @@
     <div class="container">
         <div class="row">
             <div style="text-align:center" class="col-md-4">
-                <a href="#">
+                <a href="create_template.php">
                 <img  data-src="holder.js/200x200" src="addrule.png" class="img-thumbnail" alt="New Template">
                 <h3> New Template </h3>
                 </a>

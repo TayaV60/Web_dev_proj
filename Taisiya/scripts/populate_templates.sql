@@ -1,4 +1,4 @@
-INSERT INTO Templates (title, contents)
+INSERT INTO Templates (title, contents, comments)
 VALUES ('CV', '{{date}} 
 {{applicant_name}} 
 {{applicant_email}} 
@@ -11,9 +11,10 @@ We wish you all the best in your job search.
 
 Best wishes, 
 {{interviewer_name}} 
-{{interviewer_email}}');
+{{interviewer_email}}', 
+'hello::::goodbye');
 
-INSERT INTO Templates (title, contents)
+INSERT INTO Templates (title, contents, comments)
 VALUES ('Phone interview', '{{date}}
 {{applicant_name}}
 {{applicant_email}}
@@ -33,9 +34,10 @@ On behalf of HappyTech, I thank you for your time, interest and effort, and I wi
 
 Regards,
 {{interviewer_name}}
-{{interviewer_email}}');
+{{interviewer_email}}', 
+'hello::::goodbye');
 
-INSERT INTO Templates (title, contents)
+INSERT INTO Templates (title, contents, comments)
 VALUES ('Technical interview', '{{date}}
 {{applicant_name}}
 {{applicant_email}}
@@ -52,5 +54,6 @@ On behalf of HappyTech, I thank you for your time, interest and effort, and I wi
 
 Regards,
 {{interviewer_name}}
-{{interviewer_email}}');
+{{interviewer_email}}', 
+'hello::::goodbye');
 

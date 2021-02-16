@@ -4,7 +4,18 @@ include 'db_connection.php';
 // open database connextion
 $conn = OpenCon();
 
-// run queries here...
+function listTemplates($conn) {
+    $result = $conn->query("SELECT id, title FROM Templates");
+    $templates = array();
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $templates[] = $row; // append each row to the $templates array
+        }
+    }
+    return $templates;
+  }
+
+$templates = listTemplates($conn);
 
 // close connection
 CloseCon($conn);
@@ -43,28 +54,30 @@ include 'topmenu.php';
         <br>
         <br>
         <table>
-            <tr>
-                <td>CV</td>
-                <td><img class="icon" src="assets/edit.png" alt="Edit"></td>
-                <td><img class="icon" src="assets/delete.png" alt="Delete"></td>
-            </tr>    
-            <tr>
-                <td>Phone interview</td>
-                <td><img class="icon" src="assets/edit.png" alt="Edit"></td>
-                <td><img class="icon" src="assets/delete.png" alt="Delete"></td>
-            </tr>
-            <tr>
-                <td>Technical interview</td>
-                <td><img class="icon" src="assets/edit.png" alt="Edit"></td>
-                <td><img class="icon" src="assets/delete.png" alt="Delete"></td>
-            </tr>
-            <tr>
-                <td>Culture fit interview</td>
-                <td><img class="icon" src="assets/edit.png" alt="Edit"></td>
-                <td><img class="icon" src="assets/delete.png" alt="Delete"></td>
-            </tr>
-
+            <?php 
+                foreach ($templates as &$value) {
+                    $id = $value["id"];
+                    $title = $value["title"];
+                    $editUrl = "edit_existing_template.php?id=$id";
+                    $deleteUrl = "delete_existing_template.php?id=$id";
+                    echo "<tr>";
+                    echo "<td>";
+                    echo $title;
+                    echo "</td>";
+                    echo "<td>";
+                    echo "<a href=\"$editUrl\" title=\"Edit $title\" >";
+                    echo "<img class=\"icon\" src=\"assets/edit.png\" alt=\"Edit\">";
+                    echo "</a>";
+                    echo "</td>";
+                    echo "<td>";
+                    echo "<a href=\"$deleteUrl\" title=\"Delete $title\" >";
+                    echo "<img class=\"icon\" src=\"assets/delete.png\" alt=\"Delete\">";
+                    echo "</a>";
+                    echo "</td>";
+                    echo "</tr>";
+                }
+            ?>
     </div>
-</div>            
+</div>
 
 </body>

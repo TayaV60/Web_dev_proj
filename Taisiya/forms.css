@@ -103,3 +103,12 @@ th, td {
   display: flex;
   justify-content: space-between;
 }
+
+#form-comments {
+  border: 1px dashed grey;
+  padding: 5px;
+}
+
+#form-comments li {
+  list-style: none;
+}

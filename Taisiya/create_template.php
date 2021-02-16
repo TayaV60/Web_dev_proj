@@ -9,20 +9,19 @@ $conn = OpenCon();
 // close connection
 CloseCon($conn);
 
-$DEFAULT_TEMPLATE = "{{Date}}
-{{Name of the applicant}}
-{{email of the applicant}}
+$DEFAULT_TEMPLATE = "{{date}} 
+{{applicant_name}} 
+{{applicant_email}} 
 
-Dear {{name of the applicant}},
+Dear {{applicant_name}}, 
 
-Thank you for your application to the position of ((title of the position)). 
-We have a large number of applicants for this position and we are sorry to inform you that on this occasion you were not selected for the interview. 
+Thank you for your application to the position of {{position_title}}. We have a large number of applicants for this position and we are sorry to inform you that on this occasion you were not selected for the interview. 
 
 We wish you all the best in your job search. 
 
 Best wishes, 
-{{Name of the HR agent}}
-{{email to the HR agent}}";
+{{interviewer_name}} 
+{{interviewer_email}}";
 
 ?>
 <head>
@@ -54,8 +53,10 @@ include 'topmenu.php';
     <div class="main">
         <div class="template_form_container">
             <div class="template_form">
+                <h3>Create a new template</h3>
                 <form action="create_templates_submitted.php" method="post">
-                    <label for="title">Create a new template</label><br>
+
+                    <label for="title">Template name</label>
                     <br>
                     <input
                         type="text"
@@ -63,9 +64,16 @@ include 'topmenu.php';
                         placeholder="Enter the name of your template"
                     >
                     <br>
+                    <label for="contents">Template contents</label>
+                    <br>
                     <textarea rows="10" cols="90" name="contents">
 <?php echo $DEFAULT_TEMPLATE ?>
                     </textarea>
+                    <div class="comments">
+                        <h4>Template Comments</h4>
+                        <a onClick="addComment()">Add comment</a>
+                        <ul id="form-comments"></ul>
+                    </div>
                     <br>
                     <input type="submit" name="newtemplate" value="Save">
                     <a href="create_or_edit.php">Cancel</a>
@@ -86,6 +94,43 @@ include 'topmenu.php';
         </div>
     </div>
 </div>
+
+<script>
+
+const formComments = document.getElementById("form-comments")
+
+function addRemoveEventListeners() {
+    const formCommentLis = formComments.getElementsByTagName('li')
+
+    for (const li of formCommentLis) {
+        const a = li.getElementsByTagName("a")[0];
+        a.addEventListener('click', function() {
+            li.remove();
+        })
+    }
+}
+
+function addComment() {
+    const index = formComments.getElementsByTagName('li').length
+    formComments.innerHTML += `
+    <li>
+        <input name="comments[]" size="80" type="text" value="Candidate comment ${index}">
+        <a><img class="icon" src="assets/delete.png" alt="Remove Comment"></a>
+    </li>`;
+    addRemoveEventListeners()
+}
+
+function removeComment() {
+    console.log('Remove', this)
+}
+
+if (formComments.getElementsByTagName('li').length < 1) {
+    addComment()
+}
+
+addRemoveEventListeners()
+
+</script>
 
 </body>
 

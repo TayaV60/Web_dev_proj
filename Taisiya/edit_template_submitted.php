@@ -5,16 +5,18 @@ include 'db_connection.php';
 $conn = OpenCon();
 
 //to avoid sql injections
-function createTemplate($conn, $title, $contents, $comments) {
-  $stmt = $conn->prepare('INSERT INTO Templates (title, contents, comments) VALUES (?, ?, ?)');
+function editTemplate($conn, $id, $title, $contents, $comments) {
+  $stmt = $conn->prepare('UPDATE Templates SET title = ?, contents = ?, comments = ? WHERE id = ?'); 
   $commentsJoined = implode("::::", $comments);
-  $stmt->bind_param("sss", $title, $contents, $commentsJoined);
+  $stmt->bind_param("sssi", $title, $contents, $commentsJoined, $id);
+  
   $stmt->execute();
 
-  // print_r($stmt); just for debugging purposes
+  //print_r($stmt); just for debugging purposes
 
   $stmt->close();
 }
+
 
 // print_r($_POST); // just for debugging purposes
 
@@ -25,12 +27,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $contents = $_POST['contents'];
   $title = $_POST['title'];
   $comments = $_POST['comments'];
+  $id = $_GET['id'];
+
   if (empty($contents) && empty($title) && empty($comments)) {
     $message_to_user = "Contents of title or contents or comments are empty";
   } else {
     try {
-      createTemplate($conn, $title, $contents, $comments);
-      $message_to_user = "Template '$title' created successfully.<h3>Contents</h3><pre>$contents</pre>";
+      editTemplate($conn, $id, $title, $contents, $comments);
+      $message_to_user = "Template '$title' updated successfully.<h3>Contents</h3><pre>$contents</pre>";
       $message_to_user .= "<h3>Available comments</h3>";
       foreach ($comments as $value) {
         $message_to_user .= "<br><input type='checkbox' disabled checked> $value</li>";
@@ -77,4 +81,3 @@ include 'topmenu.php';
 </div>
 
 </body>
-

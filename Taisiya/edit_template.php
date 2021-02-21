@@ -4,23 +4,28 @@ include 'db_connection.php';
 // open database connextion
 $conn = OpenCon();
 
-// run queries here...
+
+$id=$_GET['id'];
+
+function getTemplate($conn, $id) {
+    $result = $conn->query("SELECT * FROM Templates WHERE id = '$id' ");
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            return $row; 
+        }
+    }
+}
+
+$template = getTemplate($conn, $id);
+$contents = $template["contents"];
+$title = $template["title"];
+$comments = explode("::::", $template["comments"]);
 
 // close connection
 CloseCon($conn);
 
-$DEFAULT_TEMPLATE = "{{date}} 
-{{applicant_name}} 
-{{applicant_email}} 
+// print_r($comments);
 
-Dear {{applicant_name}}, 
-
-Thank you for your application to the position of {{position_title}} at HappyTech. 
-We wish you all the best in your job search. 
-
-Best wishes, 
-{{interviewer_name}} 
-{{interviewer_email}}";
 
 ?>
 <head>
@@ -29,7 +34,6 @@ Best wishes,
 
 <body>
 
-<!-- header -->
 <div class="header">
     <h1>Happy Tech</h1>
     <h3>HR tool for writing application feedback</h3>
@@ -40,38 +44,46 @@ Best wishes,
 include 'topmenu.php';
 ?>
 
-<!-- container with the vertical buttons and the contents field inside -->
 <div class="container">
-
     <!-- vertical buttons, see code in sidemenu.php -->
     <?php
     include 'sidemenu.php';
     ?>
 
-    <!-- the contents field -->
+    <div class="main">
     <div class="main">
         <div class="template_form_container">
             <div class="template_form">
                 <h3>Create a new template</h3>
-                <form action="create_templates_submitted.php" method="post">
+                <form action="edit_template_submitted.php?id=<?php echo $id?>" method="post">
 
                     <label for="title">Template name</label>
                     <br>
                     <input
                         type="text"
                         name="title"
+                        value="<?php echo $title ?>"
                         placeholder="Enter the name of your template"
                     >
                     <br>
                     <label for="contents">Template contents</label>
                     <br>
                     <textarea rows="10" cols="90" name="contents">
-<?php echo $DEFAULT_TEMPLATE ?>
+<?php echo $contents ?>
                     </textarea>
                     <div class="comments">
                         <h4>Template Comments</h4>
                         <a onClick="addComment()">Add comment</a>
-                        <ul id="form-comments"></ul>
+                        <ul id="form-comments">
+                        <?php
+                            foreach ($comments as $comment) {
+                                echo "<li>
+                                    <input name=\"comments[]\" size=\"80\" type=\"text\" value=\"$comment\">
+                                    <a><img class=\"icon\" src=\"assets/delete.png\" alt=\"Remove Comment\"></a>
+                                </li>";
+                            }
+                        ?>
+                        </ul>
                     </div>
                     <br>
                     <input type="submit" name="newtemplate" value="Save">

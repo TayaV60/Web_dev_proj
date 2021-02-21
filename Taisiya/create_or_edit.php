@@ -13,9 +13,9 @@ function listTemplates($conn) {
         }
     }
     return $templates;
-  }
+}
 
-$templates = listTemplates($conn);
+$templates = listTemplates($conn); 
 
 // close connection
 CloseCon($conn);
@@ -58,8 +58,8 @@ include 'topmenu.php';
                 foreach ($templates as &$value) {
                     $id = $value["id"];
                     $title = $value["title"];
-                    $editUrl = "edit_existing_template.php?id=$id";
-                    $deleteUrl = "delete_existing_template.php?id=$id";
+                    $editUrl = "edit_template.php?id=$id";
+                    $deleteUrl = "delete_template.php?id=$id";
                     echo "<tr>";
                     echo "<td>";
                     echo $title;

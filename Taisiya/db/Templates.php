@@ -19,6 +19,15 @@ class DBTemplates {
         return $templates;
     }
 
+    public function getTemplate($id) {
+        $result = $this->conn->query("SELECT * FROM Templates WHERE id = '$id' ");
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                return $row; 
+            }
+        }
+    }
+
     public function createTemplate($title, $contents, $comments) {
         $stmt = $this->conn->prepare('INSERT INTO Templates (title, contents, comments) VALUES (?, ?, ?)');
         $commentsJoined = implode("::::", $comments);

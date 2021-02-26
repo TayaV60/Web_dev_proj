@@ -1,24 +1,11 @@
 <?php
-include 'db_connection.php';
+include 'db/Templates.php';
 
-// open database connextion
-$conn = OpenCon();
+$dbTemplates = new DBTemplates();
 
-
-// print_r($comments);
 $id=$_GET['id'];
 
-
-function getTemplate($conn, $id) {
-    $result = $conn->query("SELECT * FROM Templates WHERE id = '$id' ");
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            return $row; 
-        }
-    }
-}
-
-$template = getTemplate($conn, $id);
+$template = $dbTemplates->getTemplate($id);
 $contents = $template["contents"];
 $title = $template["title"];
 $comments = explode("::::", $template["comments"]);

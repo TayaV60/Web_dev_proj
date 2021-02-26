@@ -1,13 +1,4 @@
 <?php
-include 'db_connection.php';
-
-// open database connextion
-$conn = OpenCon();
-
-// run queries here...
-
-// close connection
-CloseCon($conn);
 
 $DEFAULT_TEMPLATE = "{{date}} 
 {{applicant_name}} 

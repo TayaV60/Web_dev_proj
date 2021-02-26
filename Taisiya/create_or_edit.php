@@ -1,5 +1,4 @@
 <?php
-// include 'db_connection.php';
 include 'db/Templates.php';
 
 $dbTemplates = new DBTemplates();

@@ -1,53 +1,18 @@
 <?php
-include 'db_connection.php';
+include 'db/Templates.php';
 
-// open database connextion
-$conn = OpenCon();
+$dbTemplates = new DBTemplates();
 
 $id=$_GET['id'];
 
-function deleteTemplate($conn, $id) {
-    $stmt = $conn->prepare("DELETE FROM Templates WHERE id = ?");
-
-    // Check if prepare() failed.
-    if ( false === $stmt ) {
-        error_log('mysqli prepare() failed: ');
-        error_log( print_r( htmlspecialchars($stmt->error), true ) );
-        return 0;
-    }
-
-    // Bind the value to the statement
-    $bind = $stmt->bind_param('i', $id);
-    
-    // Check if bind_param() failed.
-    if ( false === $bind ) {
-        error_log('bind_param() failed:');
-        error_log( print_r( htmlspecialchars($stmt->error), true ) );
-        return 0;
-    }
-
-    $exec = $stmt->execute();
-    // Check if execute() failed. 
-    if ( false === $exec ) {
-        error_log('mysqli execute() failed: ');
-        error_log( print_r( htmlspecialchars($stmt->error), true ) );
-        return 0;
-    }
-
-    return $stmt->affected_rows;
-}
-
 $message_to_user = "Nothing deleted";
 
-$number_of_rows_deleted = deleteTemplate($conn, $id);
+$number_of_rows_deleted = $dbTemplates->deleteTemplate($id);
 if ($number_of_rows_deleted == 1) {
     $message_to_user = "Template deleted successfully";
 } elseif ($number_of_rows_deleted > 1) {
     $message_to_user = "More than one template was deleted!";
 }
-
-// close connection
-CloseCon($conn);
 
 ?>
 <head>

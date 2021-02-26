@@ -1,24 +1,9 @@
 <?php
-include 'db_connection.php';
+// include 'db_connection.php';
+include 'db/Templates.php';
 
-// open database connextion
-$conn = OpenCon();
-
-function listTemplates($conn) {
-    $result = $conn->query("SELECT id, title FROM Templates");
-    $templates = array();
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $templates[] = $row; // append each row to the $templates array
-        }
-    }
-    return $templates;
-}
-
-$templates = listTemplates($conn); 
-
-// close connection
-CloseCon($conn);
+$dbTemplates = new DBTemplates();
+$templates = $dbTemplates->listTemplates(); 
 
 ?>
 <head>

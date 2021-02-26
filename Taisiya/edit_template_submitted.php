@@ -1,22 +1,7 @@
 <?php
-include 'db_connection.php';
+include 'db/Templates.php';
 
-// open database connextion
-$conn = OpenCon();
-
-//to avoid sql injections
-function editTemplate($conn, $id, $title, $contents, $comments) {
-  $stmt = $conn->prepare('UPDATE Templates SET title = ?, contents = ?, comments = ? WHERE id = ?'); 
-  $commentsJoined = implode("::::", $comments);
-  $stmt->bind_param("sssi", $title, $contents, $commentsJoined, $id);
-  
-  $stmt->execute();
-
-  //print_r($stmt); just for debugging purposes
-
-  $stmt->close();
-}
-
+$dbTemplates = new DBTemplates();
 
 // print_r($_POST); // just for debugging purposes
 
@@ -33,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $message_to_user = "Contents of title or contents or comments are empty";
   } else {
     try {
-      editTemplate($conn, $id, $title, $contents, $comments);
+      $dbTemplates->editTemplate($id, $title, $contents, $comments);
       $message_to_user = "Template '$title' updated successfully.<h3>Contents</h3><pre>$contents</pre>";
       $message_to_user .= "<h3>Available comments</h3>";
       foreach ($comments as $value) {
@@ -44,9 +29,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
   }
 }
-
-// close connection
-CloseCon($conn);
 
 ?>
 <head>

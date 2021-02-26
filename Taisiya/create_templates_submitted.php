@@ -1,22 +1,7 @@
 <?php
-include 'db_connection.php';
+include 'db/Templates.php';
 
-// open database connextion
-$conn = OpenCon();
-
-//to avoid sql injections
-function createTemplate($conn, $title, $contents, $comments) {
-  $stmt = $conn->prepare('INSERT INTO Templates (title, contents, comments) VALUES (?, ?, ?)');
-  $commentsJoined = implode("::::", $comments);
-  $stmt->bind_param("sss", $title, $contents, $commentsJoined);
-  $stmt->execute();
-
-  // print_r($stmt); just for debugging purposes
-
-  $stmt->close();
-}
-
-// print_r($_POST); // just for debugging purposes
+$dbTemplates = new DBTemplates();
 
 $message_to_user = "No data posted";
 
@@ -29,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $message_to_user = "Contents of title or contents or comments are empty";
   } else {
     try {
-      createTemplate($conn, $title, $contents, $comments);
+      $dbTemplates->createTemplate($title, $contents, $comments);
       $message_to_user = "Template '$title' created successfully.<h3>Contents</h3><pre>$contents</pre>";
       $message_to_user .= "<h3>Available comments</h3>";
       foreach ($comments as $value) {
@@ -40,9 +25,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
   }
 }
-
-// close connection
-CloseCon($conn);
 
 ?>
 <head>

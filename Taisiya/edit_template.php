@@ -25,6 +25,7 @@ $comments = explode("::::", $template["comments"]);
 <!-- horizontal buttons, see code in topmenu.php -->
 <?php
 include 'topmenu.php';
+topMenu("Templates");
 ?>
 
 <div class="container">

@@ -46,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!-- horizontal buttons, see code in topmenu.php -->
 <?php
 include 'topmenu.php';
+topMenu("Templates");
 ?>
 
 <!-- container with the vertical buttons and the contents field inside -->

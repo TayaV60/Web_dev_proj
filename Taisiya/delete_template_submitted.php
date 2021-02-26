@@ -30,6 +30,7 @@ if ($number_of_rows_deleted == 1) {
 <!-- horizontal buttons, see code in topmenu.php -->
 <?php
 include 'topmenu.php';
+topMenu("Templates");
 ?>
 
 <!-- container with the vertical buttons and the contents field inside -->

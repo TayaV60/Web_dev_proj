@@ -69,6 +69,10 @@ h3 {
   background-color: rgb(221, 218, 218);
 }
 
+a.current_tab {
+  color: black;
+}
+
 .container {
   display: flex;
 }

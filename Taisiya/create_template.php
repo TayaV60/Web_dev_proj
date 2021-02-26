@@ -29,6 +29,7 @@ Best wishes,
 <!-- horizontal buttons, see code in topmenu.php -->
 <?php
 include 'topmenu.php';
+topMenu("Templates");
 ?>
 
 <!-- container with the vertical buttons and the contents field inside -->

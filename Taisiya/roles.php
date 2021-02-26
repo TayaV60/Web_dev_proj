@@ -25,6 +25,7 @@ CloseCon($conn);
 <!-- horizontal buttons, see code in topmenu.php -->
 <?php
 include 'topmenu.php';
+topMenu("Roles");
 ?>
 
 <!-- container with the vertical buttons and the contents field inside -->

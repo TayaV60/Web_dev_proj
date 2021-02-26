@@ -24,6 +24,7 @@ CloseCon($conn);
 <!-- horizontal buttons, see code in topmenu.php -->
 <?php
 include 'topmenu.php';
+topMenu("");
 ?>
 
 <div class="container">

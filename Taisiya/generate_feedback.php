@@ -31,6 +31,7 @@ topMenu("");
     <!-- vertical buttons, see code in sidemenu.php -->
     <?php
     include 'sidemenu.php';
+    sideMenu("Generate feedback");
     ?>
 
     <div class="main">

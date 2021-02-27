@@ -55,6 +55,7 @@ topMenu("Templates");
     <!-- vertical buttons, see code in sidemenu.php -->
     <?php
     include 'sidemenu.php';
+    sideMenu("");
     ?>
 
 <div class="main">

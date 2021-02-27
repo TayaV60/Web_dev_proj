@@ -2,18 +2,19 @@
 // horizontal menu link buttons
 function topMenu($title) {
     $tabs = [
-        "Templates" => "create_or_edit",
+        "Templates" => "templates",
         "Applicants" => "applicants",
         "Roles" => "roles",
     ];
-    print "<div class='horizontal'>";
+    $menu = "<div class='horizontal'>";
     foreach($tabs as $tab_title => $tab_file) {
         if ($tab_title == $title) {
             $linkClass = "current_tab";
         } else {
             $linkClass = "";
         }
-        print "<a class='$linkClass' href='$tab_file.php'>$tab_title</a>";
+        $menu .= "<a class='$linkClass' href='$tab_file.php'>$tab_title</a>";
     }
-    print "</div>";
+    $menu .= "</div>";
+    return $menu;
 }

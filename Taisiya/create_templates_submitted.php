@@ -1,5 +1,9 @@
 <?php
 include 'db/Templates.php';
+include 'page_elements/Page.php';
+
+$page = new Page("Create a new template", "Templates");
+print $page->top();
 
 $dbTemplates = new DBTemplates();
 
@@ -27,38 +31,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 ?>
-<head>
-    <link rel="stylesheet" href="forms.css">
-</head>    
+<h3>Template submitted</h3>
+<?php 
+// the message to user
+echo $message_to_user;
 
-<body>
-
-<!-- header -->
-<div class="header">
-    <h1>Happy Tech</h1>
-    <h3>HR tool for writing application feedback</h3>
-</div>
-
-<!-- horizontal buttons, see code in topmenu.php -->
-<?php
-include 'topmenu.php';
-topMenu("Templates");
-?>
-
-<!-- container with the vertical buttons and the contents field inside -->
-<div class="container">
-
-    <!-- vertical buttons, see code in sidemenu.php -->
-    <?php
-    include 'sidemenu.php';
-    sideMenu("");
-    ?>
-
-<div class="main">
-  <h3>Template submitted</h3>
-  <!-- the message to user -->
-  <?php echo $message_to_user ?>
-</div>
-
-</body>
-
+print $page->bottom();

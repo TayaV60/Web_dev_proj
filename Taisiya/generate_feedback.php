@@ -1,43 +1,11 @@
 <?php
-include 'db_connection.php';
+include 'page_elements/Page.php';
 
-// open database connextion
-$conn = OpenCon();
-
-// run queries here...
-
-// close connection
-CloseCon($conn);
+$page = new Page("Generate Feedback", "Generate feedback");
+print $page->top();
 
 ?>
-<head>
-    <link rel="stylesheet" href="forms.css">
-</head>    
-
-<body>
-
-<div class="header">
-    <h1>Happy Tech</h1>
-    <h3>HR tool for writing application feedback</h3>
-</div>
-
-<!-- horizontal buttons, see code in topmenu.php -->
+<h4>Generate feedback</h4>
 <?php
-include 'topmenu.php';
-topMenu("");
-?>
 
-<div class="container">
-    <!-- vertical buttons, see code in sidemenu.php -->
-    <?php
-    include 'sidemenu.php';
-    sideMenu("Generate feedback");
-    ?>
-
-    <div class="main">
-        <h4>Generate feedback</h4>
-
-    </div>
-</div>            
-
-</body>
+print $page->bottom();

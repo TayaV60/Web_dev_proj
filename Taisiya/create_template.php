@@ -21,7 +21,7 @@ Best wishes,
 <div class="template_form_container">
     <div class="template_form">
         <h3>Create a new template</h3>
-        <form action="create_templates_submitted.php" method="post">
+        <form action="create_template_submitted.php" method="post">
 
             <label for="title">Template name</label>
             <br>

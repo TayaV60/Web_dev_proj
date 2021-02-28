@@ -17,7 +17,7 @@ $comments = explode("::::", $template["comments"]);
 ?>
 <div class="template_form_container">
     <div class="template_form">
-        <h3>Create a new template</h3>
+        <h3>Edit template</h3>
         <form action="edit_template_submitted.php?id=<?php echo $id?>" method="post">
 
             <label for="title">Template name</label>

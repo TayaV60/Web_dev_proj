@@ -5,3 +5,12 @@ CREATE TABLE Templates (
     comments TEXT,
     PRIMARY KEY (id)
 );
+
+CREATE TABLE Applicants (
+    id int NOT NULL AUTO_INCREMENT,
+    name varchar (100),
+    position varchar (100),
+    email varchar (100),
+    phone int (25),
+    PRIMARY KEY (id)
+);

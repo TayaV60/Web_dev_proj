@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $position = $_POST['position'];
   $email = $_POST['email'];
   $phone = $_POST['phone'];
-  if (empty($name) && empty($position) && empty($email) && empty($phone)) {
+  if (empty($name) || empty($position) || empty($email) || empty($phone)) {
     $message_to_user = "Name or position or email or phone is empty";
   } else {
     try {

@@ -14,8 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $contents = $_POST['contents'];
   $title = $_POST['title'];
   $comments = $_POST['comments'];
-  if (empty($contents) && empty($title) && empty($comments)) {
-    $message_to_user = "Contents of title or contents or comments are empty";
+  if (empty($contents) || empty($title) || empty($comments)) {
+    $message_to_user = "Contents of title or contents or comments is empty";
   } else {
     try {
       $dbTemplates->createTemplate($title, $contents, $comments);

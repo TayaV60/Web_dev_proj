@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   } else {
     try {
       $dbApplicants->createApplicant($name, $position, $email, $phone);
-      $message_to_user = "Applicant '$name' created successfully.<h3>Contents</h3><pre>$name</pre>";
+      $message_to_user = "Applicant '$name' created successfully, for $position. The email is $email and their phone number is $phone.";
     } catch (Exception $e) {
       $message_to_user = "Could not add applicant.";
     }

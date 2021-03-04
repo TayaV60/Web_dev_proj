@@ -30,8 +30,23 @@ class DBApplicants {
 
     public function createApplicant($name, $position, $email, $phone) {
         $stmt = $this->conn->prepare('INSERT INTO Applicants (name, position, email, phone) VALUES (?, ?, ?, ?)');
-        $stmt->bind_param("ssss", $name, $position, $email, $phone);
-        $stmt->execute();
+        if ( false === $stmt ) {
+            error_log('mysqli prepare() failed: ');
+            error_log( print_r( htmlspecialchars($stmt->error), true ) );
+            return 0;
+        }
+        $bind = $stmt->bind_param("ssss", $name, $position, $email, $phone);
+        if ( false === $bind ) {
+            error_log('bind_param() failed:');
+            error_log( print_r( htmlspecialchars($stmt->error), true ) );
+            return 0;
+        }
+        $exec = $stmt->execute();
+        if ( false === $exec ) {
+            error_log('mysqli execute() failed: ');
+            error_log( print_r( htmlspecialchars($stmt->error), true ) );
+            return 0;
+        }
       
         $stmt->close();
     }

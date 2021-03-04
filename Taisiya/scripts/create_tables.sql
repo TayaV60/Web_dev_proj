@@ -11,6 +11,6 @@ CREATE TABLE Applicants (
     name varchar (100),
     position varchar (100),
     email varchar (100),
-    phone int (25),
+    phone BIGINT (25),
     PRIMARY KEY (id)
 );

@@ -11,7 +11,7 @@ $id=$_GET['id'];
 
 $message_to_user = "Nothing deleted";
 
-$number_of_rows_deleted = $dbTemplates->deleteTemplate($id);
+$number_of_rows_deleted = $dbTemplates->deleteTemplate($id)->getAffectedRows();
 if ($number_of_rows_deleted == 1) {
     $message_to_user = "Template deleted successfully";
 } elseif ($number_of_rows_deleted > 1) {

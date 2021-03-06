@@ -1,12 +1,7 @@
 <?php
 include 'db_connection.php';
 
-class DBApplicants {
-    private $conn;
-
-    public function __construct() {
-        $this->conn = OpenCon();
-    }
+class DBApplicants extends DB {
 
     public function listApplicants() {
         $result = $this->conn->query("SELECT id, name, position, email, phone FROM Applicants");
@@ -91,9 +86,5 @@ class DBApplicants {
         return $stmt->affected_rows;
     }
     
-
-    public function __destruct() {
-        CloseCon($this->conn);
-    }
 }
 

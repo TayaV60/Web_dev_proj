@@ -14,3 +14,9 @@ CREATE TABLE Applicants (
     phone BIGINT (25),
     PRIMARY KEY (id)
 );
+
+CREATE TABLE Roles (
+    id int NOT NULL AUTO_INCREMENT,
+    title varchar (100),
+    PRIMARY KEY (id)
+);

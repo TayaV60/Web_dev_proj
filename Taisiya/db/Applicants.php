@@ -4,7 +4,9 @@ include 'db_connection.php';
 class DBApplicants extends DB {
 
     public function listApplicants() {
-        $result = $this->conn->query("SELECT id, name, position, email, phone FROM Applicants");
+        $query = "SELECT id, name, position, email, phone FROM Applicants";
+        $dbResult = $this->query($query);
+        $result = $dbResult->getResult();
         $applicants = array();
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
@@ -15,7 +17,11 @@ class DBApplicants extends DB {
     }
 
     public function getApplicants($id) {
-        $result = $this->conn->query("SELECT * FROM Applicants WHERE id = '$id' ");
+        $query = "SELECT * FROM Applicants WHERE id = ? ";
+        $types = "i";
+        $params = [$id];
+        $dbResult = $this->query($query, $types, $params);
+        $result = $dbResult->getResult();
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
                 return $row; 
@@ -23,67 +29,28 @@ class DBApplicants extends DB {
         }
     }
 
+
     public function createApplicant($name, $position, $email, $phone) {
-        $stmt = $this->conn->prepare('INSERT INTO Applicants (name, position, email, phone) VALUES (?, ?, ?, ?)');
-        if ( false === $stmt ) {
-            error_log('mysqli prepare() failed: ');
-            error_log( print_r( htmlspecialchars($stmt->error), true ) );
-            return 0;
-        }
-        $bind = $stmt->bind_param("ssss", $name, $position, $email, $phone);
-        if ( false === $bind ) {
-            error_log('bind_param() failed:');
-            error_log( print_r( htmlspecialchars($stmt->error), true ) );
-            return 0;
-        }
-        $exec = $stmt->execute();
-        if ( false === $exec ) {
-            error_log('mysqli execute() failed: ');
-            error_log( print_r( htmlspecialchars($stmt->error), true ) );
-            return 0;
-        }
-      
-        $stmt->close();
+        $query = 'INSERT INTO Applicants (name, position, email, phone) VALUES (?, ?, ?, ?)';
+        $types = "ssss";
+        $params = [$name, $position, $email, $phone];
+        return $this->query($query, $types, $params);
     }
+
 
     public function editApplicant($id, $name, $position, $email, $phone) {
-      $stmt = $this->conn->prepare('UPDATE Applicants SET name = ?, position = ?, email = ?, phone = ? WHERE id = ?'); 
-      $stmt->bind_param("ssssi", $name, $position, $email, $phone, $id);
-      
-      $stmt->execute();
-    
-      $stmt->close();
+      $query = 'UPDATE Applicants SET name = ?, position = ?, email = ?, phone = ? WHERE id = ?'; 
+      $types = "ssssi";
+      $params = [$name, $position, $email, $phone, $id];
+      return $this->query($query, $types, $params);
     }
 
+
     public function deleteApplicant($id) {
-        $stmt = $this->conn->prepare("DELETE FROM Applicants WHERE id = ?");
-    
-        // Check if prepare() failed.
-        if ( false === $stmt ) {
-            error_log('mysqli prepare() failed: ');
-            error_log( print_r( htmlspecialchars($stmt->error), true ) );
-            return 0;
-        }
-    
-        // Bind the value to the statement
-        $bind = $stmt->bind_param('i', $id);
-        
-        // Check if bind_param() failed.
-        if ( false === $bind ) {
-            error_log('bind_param() failed:');
-            error_log( print_r( htmlspecialchars($stmt->error), true ) );
-            return 0;
-        }
-    
-        $exec = $stmt->execute();
-        // Check if execute() failed. 
-        if ( false === $exec ) {
-            error_log('mysqli execute() failed: ');
-            error_log( print_r( htmlspecialchars($stmt->error), true ) );
-            return 0;
-        }
-    
-        return $stmt->affected_rows;
+        $query = 'DELETE FROM Applicants WHERE id = ?"';
+        $types = "i";
+        $params = [$id];
+        return $this->query($query, $types, $params);
     }
     
 }

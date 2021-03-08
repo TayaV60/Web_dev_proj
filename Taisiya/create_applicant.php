@@ -1,8 +1,12 @@
 <?php
 include 'page_elements/Page.php';
+include 'db/Roles.php';
 
 $page = new Page("Create a new applicant", "Applicants");
 print $page->top();
+
+$dbRoles = new DBRoles();
+$roles = $dbRoles->listRoles();
 
 ?>
 <div class="applicant_form_container">
@@ -22,11 +26,15 @@ print $page->top();
             <br>
             <label for="position">Position applied for</label>
             <br>
-            <input
-                type="text"
-                name="position"
-                placeholder="Enter the position applied for"
-            >
+            <?php
+                echo "<select name='roles[]' multiple>";
+                foreach ($roles as $value) {
+                    $id = $value["id"];
+                    $title = $value["title"];
+                    echo "<option value='$id'>$title</option>";
+                }
+                echo "</select>";
+            ?>
 
             <br>
             <br>

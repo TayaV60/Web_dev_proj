@@ -51,7 +51,7 @@ class DB {
     if ( false === $exec ) {
       error_log('mysqli execute() failed: ');
       error_log( print_r( htmlspecialchars($stmt->error), true ) );
-      throw new Exception('Execution failed');
+      throw new Exception("Execution failed $stmt->error");
     }
 
     $dbResult = new DBStatementResults($stmt);

@@ -20,7 +20,6 @@ print $page->top();
     foreach ($applicants as &$value) {
         $id = $value["id"];
         $name = $value["name"];
-        $position = $value["position"];
         $email = $value ["email"];
         $phone = $value ["phone"];
         $editUrl = "edit_applicant.php?id=$id";
@@ -28,9 +27,6 @@ print $page->top();
         echo "<tr>";
         echo "<td>";
         echo $name;
-        echo "</td>";
-        echo "<td>";
-        echo $position;
         echo "</td>";
         echo "<td>";
         echo $email;

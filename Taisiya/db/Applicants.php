@@ -4,7 +4,7 @@ include 'db_connection.php';
 class DBApplicants extends DB {
 
     public function listApplicants() {
-        $query = "SELECT id, name, position, email, phone FROM Applicants";
+        $query = "SELECT id, name, email, phone FROM Applicants";
         $dbResult = $this->query($query);
         $result = $dbResult->getResult();
         $applicants = array();
@@ -29,19 +29,32 @@ class DBApplicants extends DB {
         }
     }
 
+    public function getApplicantByName($name) {
+        $query = "SELECT * FROM Applicants WHERE name = ? ";
+        $types = "s";
+        $params = [$name];
+        $dbResult = $this->query($query, $types, $params);
+        $result = $dbResult->getResult();
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                return $row; 
+            }
+        }
+    }
 
-    public function createApplicant($name, $position, $email, $phone) {
-        $query = 'INSERT INTO Applicants (name, position, email, phone) VALUES (?, ?, ?, ?)';
-        $types = "ssss";
-        $params = [$name, $position, $email, $phone];
+
+    public function createApplicant($name, $email, $phone) {
+        $query = 'INSERT INTO Applicants (name, email, phone) VALUES (?, ?, ?)';
+        $types = "sss";
+        $params = [$name, $email, $phone];
         return $this->query($query, $types, $params);
     }
 
 
-    public function editApplicant($id, $name, $position, $email, $phone) {
-      $query = 'UPDATE Applicants SET name = ?, position = ?, email = ?, phone = ? WHERE id = ?'; 
-      $types = "ssssi";
-      $params = [$name, $position, $email, $phone, $id];
+    public function editApplicant($id, $name, $email, $phone) {
+      $query = 'UPDATE Applicants SET name = ?, email = ?, phone = ? WHERE id = ?'; 
+      $types = "sssi";
+      $params = [$name, $email, $phone, $id];
       return $this->query($query, $types, $params);
     }
 

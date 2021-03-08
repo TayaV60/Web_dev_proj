@@ -14,16 +14,15 @@ $message_to_user = "No data posted";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // collect value of input field
   $name = $_POST['name'];
-  $position = $_POST['position'];
   $email = $_POST['email'];
   $phone = $_POST['phone'];
   $id = $_GET['id'];
-  if (empty($name) || empty($position) || empty($email) || empty($phone)) {
-    $message_to_user = "Name of position or email or phone is empty";
+  if (empty($name) || empty($email) || empty($phone)) {
+    $message_to_user = "Name or email or phone is empty";
   } else {
     try {
-      $dbApplicants->editApplicant($id, $name, $position, $email, $phone);
-      $message_to_user = "User '$name' updated successfully, for $position. The email is $email and their phone number is $phone.";
+      $dbApplicants->editApplicant($id, $name, $email, $phone);
+      $message_to_user = "User '$name' updated successfully. The email is $email and their phone number is $phone.";
     } catch (Exception $e) {
       $message_to_user = "Could not edit applicant.";
     }

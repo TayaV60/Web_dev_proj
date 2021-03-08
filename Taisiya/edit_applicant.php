@@ -11,7 +11,6 @@ $id=$_GET['id'];
 
 $applicant = $dbApplicants->getApplicants($id);
 $name = $applicant["name"];
-$position = $applicant["position"];
 $email = $applicant["email"];
 $phone = $applicant["phone"];
 
@@ -33,7 +32,7 @@ $phone = $applicant["phone"];
             <input
                 type="text"
                 name="position"
-                value="<?php echo $position ?>"
+                value=""
                 
             >
 

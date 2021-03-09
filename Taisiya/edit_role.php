@@ -9,7 +9,7 @@ $dbRoles = new DBRoles();
 
 $id=$_GET['id'];
 
-$role = $dbRoles->getRoles($id);
+$role = $dbRoles->getRole($id);
 $title = $role["title"];
 
 ?>

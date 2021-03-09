@@ -1,5 +1,5 @@
 <?php
-include 'db_connection.php';
+include_once 'db_connection.php';
 
 class DBRoles extends DB {
     public function listRoles() {
@@ -15,7 +15,7 @@ class DBRoles extends DB {
         return $roles;  
     }
 
-    public function getRoles($id) {
+    public function getRole($id) {
         $query = "SELECT * FROM Roles WHERE id = ? ";
         $types = "i";
         $params = [$id];

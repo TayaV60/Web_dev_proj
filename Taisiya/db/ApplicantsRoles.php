@@ -9,6 +9,20 @@ class DBApplicantsRoles extends DB {
         $params = [$applicantId, $roleId];
         return $this->query($query, $types, $params);
     }
+
+    public function clearApplicantRoles($applicantId) {
+        $query = 'DELETE FROM Applicants_Roles WHERE applicant_id = ?';
+        $types = "i";
+        $params = [$applicantId];
+        return $this->query($query, $types, $params);
+    }
+
+    public function getRoleIdsForApplicant($applicantId) {
+        $query = 'SELECT role_id FROM Applicants_Roles WHERE applicant_id = ?';
+        $types = "i";
+        $params = [$applicantId];
+        return $this->query($query, $types, $params);
+    }
     
 }
 

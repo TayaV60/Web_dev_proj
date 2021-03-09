@@ -1,5 +1,5 @@
 <?php
-include 'db_connection.php';
+include_once 'db_connection.php';
 
 class DBApplicants extends DB {
 
@@ -16,7 +16,7 @@ class DBApplicants extends DB {
         return $applicants;  
     }
 
-    public function getApplicants($id) {
+    public function getApplicant($id) {
         $query = "SELECT * FROM Applicants WHERE id = ? ";
         $types = "i";
         $params = [$id];

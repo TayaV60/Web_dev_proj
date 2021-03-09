@@ -1,18 +1,21 @@
 <?php
-include 'db/Applicants.php';
+include 'coordination/Applicants.php';
 include 'page_elements/Page.php';
 
 $page = new Page("Edit applicant", "Applicant");
 print $page->top();
 
-$dbApplicants = new DBApplicants();
+$coApplicants = new ApplicantsCoordinator();
 
 $id=$_GET['id'];
 
-$applicant = $dbApplicants->getApplicants($id);
+$applicant = $coApplicants->getApplicant($id);
 $name = $applicant["name"];
 $email = $applicant["email"];
 $phone = $applicant["phone"];
+
+$roles = $coApplicants->listRoles();
+$applicantRoles = $coApplicants->getRolesForApplicant($id);
 
 ?>
 <div class="applicant_form_container">
@@ -28,21 +31,32 @@ $phone = $applicant["phone"];
                 value="<?php echo $name ?>"
                 
             >
+            <br>
+            <br>
 
-            <input
-                type="text"
-                name="position"
-                value=""
-                
-            >
-
+            <?php
+                echo "<select name='roles[]' multiple>";
+                foreach ($roles as $value) {
+                    $id = $value["id"];
+                    $title = $value["title"];
+                    $selected = "";
+                    if (in_array($id, $applicantRoles)) {
+                        $selected = "SELECTED";
+                    }
+                    echo "<option value='$id' $selected>$title</option>";
+                }
+                echo "</select>";
+            ?>
+            <br>
+            <br>
             <input
                 type="text"
                 name="email"
                 value="<?php echo $email ?>"
                 
             >
-
+            <br>
+            <br>
             <input
                 type="text"
                 name="phone"

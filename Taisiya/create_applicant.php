@@ -1,12 +1,12 @@
 <?php
 include 'page_elements/Page.php';
-include 'db/Roles.php';
+include 'coordination/Applicants.php';
 
 $page = new Page("Create a new applicant", "Applicants");
 print $page->top();
 
-$dbRoles = new DBRoles();
-$roles = $dbRoles->listRoles();
+$coApplicants = new ApplicantsCoordinator();
+$roles = $coApplicants->listRoles();
 
 ?>
 <div class="applicant_form_container">

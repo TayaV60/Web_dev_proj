@@ -52,15 +52,15 @@ class DBApplicants extends DB {
 
 
     public function editApplicant($id, $name, $email, $phone) {
-      $query = 'UPDATE Applicants SET name = ?, email = ?, phone = ? WHERE id = ?'; 
-      $types = "sssi";
-      $params = [$name, $email, $phone, $id];
-      return $this->query($query, $types, $params);
+        $query = 'UPDATE Applicants SET name = ?, email = ?, phone = ? WHERE id = ?'; 
+        $types = "sssi";
+        $params = [$name, $email, $phone, $id];
+        return $this->query($query, $types, $params);
     }
 
 
     public function deleteApplicant($id) {
-        $query = 'DELETE FROM Applicants WHERE id = ?"';
+        $query = 'DELETE FROM Applicants WHERE id = ?';
         $types = "i";
         $params = [$id];
         return $this->query($query, $types, $params);

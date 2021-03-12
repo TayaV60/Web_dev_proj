@@ -1,17 +1,16 @@
 <?php
-include 'db/Applicants.php';
+include 'coordination/Applicants.php';
 include 'page_elements/Page.php';
 
 $page = new Page("Delete applicant", "Applicants");
 print $page->top();
 
-$dbApplicants = new DBApplicants();
+$coApplicants = new ApplicantsCoordinator();
 
 $id=$_GET['id'];
 
-$applicant = $dbApplicants->getApplicants($id);
+$applicant = $coApplicants->getApplicant($id);
 $name = $applicant["name"];
-$position = $applicant["position"];
 $email = $applicant["email"];
 $phone = $applicant["phone"];
 
@@ -32,7 +31,7 @@ $phone = $applicant["phone"];
             <input
                 type="text"
                 name="position"
-                value="<?php echo $position ?>"
+                value=""
                 
             >
 

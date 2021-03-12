@@ -48,7 +48,6 @@ class ApplicantsCoordinator
         $message_to_user = '';
         try {
             $result = $this->dbApplicants->createApplicant($name, $email, $phone, $roles);
-            print_r($result);
             $createdApplicant = $this->dbApplicants->getApplicantByName($name);
             $applicantId = $createdApplicant['id'];
             foreach ($roles as $roleId) {
@@ -74,7 +73,20 @@ class ApplicantsCoordinator
             $message_to_user = "Applicant '$name' created successfully. The email is $email and their phone number is $phone.";
         } catch (Exception $e) {
             $message = $e->getMessage();
-            $message_to_user = "Could not add applicant. $message";
+            $message_to_user = "Could not update applicant. $message";
+        }
+        return $message_to_user;
+    }
+
+    public function removeApplicant($applicantId) {
+        $message_to_user = '';
+        try {
+            $this->dbApplicantsRoles->clearApplicantRoles($applicantId);
+            $this->dbApplicants->deleteApplicant($applicantId);
+            $message_to_user = "Applicant '$applicantId' deleted successfully.";
+        } catch (Exception $e) {
+            $message = $e->getMessage();
+            $message_to_user = "Could not delete applicant. $message";
         }
         return $message_to_user;
     }

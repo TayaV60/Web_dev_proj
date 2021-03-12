@@ -2,7 +2,7 @@
 include 'coordination/Applicants.php';
 include 'page_elements/Page.php';
 
-$page = new Page("Edit aoolicant", "Applicants");
+$page = new Page("Edit applicant", "Applicants");
 print $page->top();
 
 $coApplicants = new ApplicantsCoordinator();

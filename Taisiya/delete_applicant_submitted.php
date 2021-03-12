@@ -1,22 +1,15 @@
 <?php
-include 'db/Applicants.php';
+include 'coordination/Applicants.php';
 include 'page_elements/Page.php';
 
 $page = new Page("Delete applicant", "Applicants");
 print $page->top();
 
-$dbApplicants = new DBApplicants();
+$coApplicants = new ApplicantsCoordinator();
 
 $id=$_GET['id'];
 
-$message_to_user = "Nothing deleted";
-
-$number_of_rows_deleted = $dbApplicants->deleteApplicant($id);
-if ($number_of_rows_deleted == 1) {
-    $message_to_user = "Applicant deleted successfully";
-} elseif ($number_of_rows_deleted > 1) {
-    $message_to_user = "More than one applicant was deleted!";
-}
+$message_to_user = $coApplicants->removeApplicant($id);
 
 // the message to user
 echo $message_to_user;

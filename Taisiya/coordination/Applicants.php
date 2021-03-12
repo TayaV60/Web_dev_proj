@@ -35,10 +35,8 @@ class ApplicantsCoordinator
         $dbResult = $this->dbApplicantsRoles->getRoleIdsForApplicant($applicantId);
         $result = $dbResult->getResult();
         $ids = array();
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $ids[] = $row["role_id"]; // append each row to the $templates array
-            }
+        foreach ($result as $row) {
+            $ids[] = $row["role_id"];
         }
         return $ids;
     }
@@ -78,7 +76,8 @@ class ApplicantsCoordinator
         return $message_to_user;
     }
 
-    public function removeApplicant($applicantId) {
+    public function removeApplicant($applicantId)
+    {
         $message_to_user = '';
         try {
             $this->dbApplicantsRoles->clearApplicantRoles($applicantId);

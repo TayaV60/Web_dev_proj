@@ -7,12 +7,23 @@ print $page->top();
 
 $coApplicants = new ApplicantsCoordinator();
 
-$id=$_GET['id'];
+$id = $_GET['id'];
 
 $applicant = $coApplicants->getApplicant($id);
 $name = $applicant["name"];
 $email = $applicant["email"];
 $phone = $applicant["phone"];
+
+$applicantRoles = $coApplicants->getRolesForApplicant($id);
+$roles = $coApplicants->listRoles();
+
+$applicantRoleTitles = [];
+foreach ($roles as $role) {
+    $id = $role["id"];
+    if (in_array($id, $applicantRoles)) {
+        $applicantRoleTitles[] = $role["title"];
+    }
+}
 
 ?>
 <div class="applicant_form_container">
@@ -25,36 +36,36 @@ $phone = $applicant["phone"];
                 type="text"
                 name="name"
                 value="<?php echo $name ?>"
-                
+
             >
 
             <input
                 type="text"
                 name="position"
-                value=""
-                
+                value="<?php echo implode(",", $applicantRoleTitles) ?>"
+
             >
 
             <input
                 type="text"
                 name="email"
                 value="<?php echo $email ?>"
-                
+
             >
 
             <input
                 type="text"
                 name="phone"
                 value="<?php echo $phone ?>"
-                
+
             >
-            
+
             </div>
             <br>
         </form>
         <a href="applicants.php">Cancel</a>
-        <a href="delete_applicant_submitted.php?id=<?php echo $id?>">Delete</a>
-        
+        <a href="delete_applicant_submitted.php?id=<?php echo $id ?>">Delete</a>
+
     </div>
 </div>
 <?php

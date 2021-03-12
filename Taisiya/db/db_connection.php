@@ -1,90 +1,97 @@
 <?php
-// opens the connection to the database
-function OpenCon() {
-  $dbhost = "localhost";
-  $dbuser = "root";
-  $dbpass = "";
-  $db = "HappyTech";
-  $conn = new mysqli($dbhost, $dbuser, $dbpass,$db) or die("Connect failed: %s\n". $conn -> error);
- 
-  return $conn;
-}
 
-// closes the connection with the database
-function CloseCon($conn) {
-  $conn -> close();
-}
+class DB
+{
+    protected $conn;
 
-class DB {
-  protected $conn;
-
-  public function __construct() {
-      $this->conn = OpenCon();
-  }
-
-  public function __destruct() {
-    CloseCon($this->conn);
-  }
-
-  /*
-   * Runs a query. $query is always required. $types and $params can be supplied to bind query parameters.
-   */
-  protected function query($query, $types = "", $params = []) {
-
-    $stmt = $this->conn->prepare($query);
-    if ( false === $stmt ) {
-      error_log('mysqli prepare() failed: ');
-      error_log( print_r( htmlspecialchars($stmt->error), true ) );
-      throw new Exception('Prepare failed');
+    public function __construct()
+    {
+        try {
+            $dbhost = "localhost";
+            $dbuser = "root";
+            $dbpass = "";
+            $db = "HappyTech";
+            $this->conn = new PDO("mysql:host=$dbhost;dbname=$db", $dbuser, $dbpass);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            error_log('Open connection failed: ');
+            error_log(print_r(htmlspecialchars($e), true));
+            print "Error!: " . $e->getMessage() . "<br/>";
+            die();
+        }
     }
 
-    if ($params) {
-      $bind = $stmt->bind_param($types, ...$params);
-      if ( false === $bind ) {
-        error_log('bind_param() failed:');
-        error_log( print_r( htmlspecialchars($stmt->error), true ) );
-        throw new Exception('Bind parameters failed');
-      }
+    public function __destruct()
+    {
+        $this->conn = null;
     }
 
-    $exec = $stmt->execute();
-    if ( false === $exec ) {
-      error_log('mysqli execute() failed: ');
-      error_log( print_r( htmlspecialchars($stmt->error), true ) );
-      throw new Exception("Execution failed $stmt->error");
+    /*
+     * Runs a query. $query is always required. $types and $params can be supplied to bind query parameters.
+     */
+    protected function query($query, $params = [])
+    {
+
+        $stmt = $this->conn->prepare($query);
+        if (false === $stmt) {
+            error_log('PDO prepare() failed: ');
+            error_log(print_r(htmlspecialchars($stmt->error), true));
+            throw new Exception('Prepare failed');
+        }
+
+        if ($params) {
+            foreach ($params as $key => $value) {
+                $bind = $stmt->bindValue($key, $value);
+                if (false === $bind) {
+                    error_log('bindValue() failed:');
+                    error_log(print_r(htmlspecialchars($stmt->error), true));
+                    throw new Exception('Bind parameters failed');
+                }
+            }
+        }
+
+        $exec = $stmt->execute();
+        if (false === $exec) {
+            error_log('PDO execute() failed: ');
+            error_log(print_r(htmlspecialchars($stmt->error), true));
+            throw new Exception("Execution failed $stmt->error");
+        }
+
+        $dbResult = new DBStatementResults($stmt);
+
+        error_log(print_r($dbResult->getAffectedRows(), true));
+        error_log(print_r($dbResult->getResult(), true));
+
+        $stmt = null;
+
+        return $dbResult;
     }
-
-    $dbResult = new DBStatementResults($stmt);
-
-    error_log(print_r($dbResult->getAffectedRows(), true));
-    error_log(print_r($dbResult->getResult(), true));
-    
-    $stmt->close();
-
-    return $dbResult;
-  }
 }
 
 /*
  * Keeps the statement result and the number of affected rows.
  */
-class DBStatementResults {
-  // The result from $stmt->get_result()
-  private $result;
+class DBStatementResults
+{
+    // The result from $stmt->fetchAll()
+    private $result;
 
-  // The result from $stmt->affected_rows
-  private $affectedRows;
+    // The result from $stmt->rowCount
+    private $affectedRows;
 
-  public function __construct($stmt) {
-    $this->result = $stmt->get_result();
-    $this->affectedRows = $stmt->affected_rows;
-  }
+    public function __construct($stmt)
+    {
+        $this->result = $stmt->fetchAll();
+        $this->affectedRows = $stmt->rowCount();
+    }
 
-  public function getResult() {
-    return $this->result;
-  }
+    public function getResult()
+    {
+        return $this->result;
+    }
 
-  public function getAffectedRows() {
-    return $this->affectedRows;
-  }
+    public function getAffectedRows()
+    {
+        return $this->affectedRows;
+    }
 }

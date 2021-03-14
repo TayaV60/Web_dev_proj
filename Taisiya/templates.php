@@ -11,34 +11,37 @@ print $page->top();
 
 ?>
 
-<a href="create_or_edit_template.php?mode=create">Create new template</a>
+<a href="create_or_edit_template.php">Create new template</a>
 
 <br>
 <br>
 <table>
-<?php
-foreach ($templates as &$value) {
-    $id = $value["id"];
-    $title = $value["title"];
-    $editUrl = "create_or_edit_template.php?id=$id&mode=edit";
-    $deleteUrl = "delete_template.php?id=$id";
-    echo "<tr>";
-    echo "<td>";
-    echo $title;
-    echo "</td>";
-    echo "<td>";
-    echo "<a href=\"$editUrl\" title=\"Edit $title\" >";
-    echo "<img class=\"icon\" src=\"assets/edit.png\" alt=\"Edit\">";
-    echo "</a>";
-    echo "</td>";
-    echo "<td>";
-    echo "<a href=\"$deleteUrl\" title=\"Delete $title\" >";
-    echo "<img class=\"icon\" src=\"assets/delete.png\" alt=\"Delete\">";
-    echo "</a>";
-    echo "</td>";
-    echo "</tr>";
-}
-?>
+    <thead>
+        <tr>
+            <th>Template</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($templates as $template): ?>
+            <tr>
+                <td>
+                    <?=$template["title"]?>
+                </td>
+                <td>
+                    <a href="create_or_edit_template.php?id=<?=$template["id"]?>" title="Edit <?=$template["title"]?>" >
+                        <img class="icon" src="assets/edit.png" alt="Edit">
+                    </a>
+                </td>
+                <td>
+                    <a href="delete_template.php?id=<?=$template["id"]?>" title="Delete <?=$template["title"]?>" >
+                        <img class="icon" src="assets/delete.png" alt="Delete">
+                    </a>
+                </td>
+            </tr>
+        <?php endforeach?>
+    </tbody>
 </table>
 <?php
 

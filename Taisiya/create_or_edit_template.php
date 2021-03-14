@@ -2,8 +2,10 @@
 include 'db/Templates.php';
 include 'page_elements/Page.php';
 
+// a DBTemplates object
 $dbTemplates = new DBTemplates();
 
+// A default template to be used if in 'create' mode.
 $DEFAULT_TEMPLATE = "{{date}}
 {{applicant_name}}
 {{applicant_email}}
@@ -17,11 +19,27 @@ Best wishes,
 {{interviewer_name}}
 {{interviewer_email}}";
 
-$valid = false;
+// returns 'edit' if the id is not null, othewrise returns 'create'
+function getMode($id)
+{
+    $mode = 'create';
+    if ($id != null) {
+        $mode = 'edit';
+    }
+    return $mode;
+}
 
-$mode = $_GET["mode"];
+// GET variables
 $id = $_GET['id'];
+$mode = getMode($id);
+
+// POST input field variables
 $comments = [];
+$contents = null;
+$title = null;
+
+// form state variables
+$valid = false;
 $saved = false;
 $errorSaving = null;
 
@@ -37,12 +55,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         // if creating, use the default template
         $contents = $DEFAULT_TEMPLATE;
     }
-}
+} else if ($_SERVER["REQUEST_METHOD"] == "POST") { // if user has posted
 
-// if user has posted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    // collect value of input fields
+    // extract value of input fields from $_POST
     $contents = $_POST['contents'];
     $title = $_POST['title'];
     $comments = $_POST['comments'];
@@ -96,61 +111,72 @@ print $page->top();
 ?>
 
 <?php if ($saved): ?>
-    Template '<?php print $title?>' saved successfully.
+    Template '<?=$title?>' saved successfully.
+
     <h3>Contents</h3>
-    <pre><?php print $contents?></pre>
-    <?php foreach ($comments as $value): ?>
+    <pre><?=$contents?></pre>
+
+    <h3>Comments</h3>
+    <?php foreach ($comments as $comment): ?>
         <br>
-        <input type='checkbox' disabled checked> <?php print $value?>
+        <input type='checkbox' disabled checked> <?=$comment?>
     <?php endforeach?>
 
 <?php elseif ($errorSaving): ?>
-    <?php print $errorSaving?>
+
+    <?=$errorSaving?>
 
 <?php else: ?>
 
     <div class="template_form_container">
         <div class="template_form">
-        <?php if ($mode == 'create'): ?>
-            <h3>Create a new template</h3>
-        <?php else: ?>
-        <h3>Edit existing template</h3>
-        <?php endif?>
-        <?php print $formHeading?>
+
+            <?php if ($mode == 'create'): ?>
+                <h3>Create a new template</h3>
+            <?php else: ?>
+                <h3>Edit existing template</h3>
+            <?php endif?>
+
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']); ?>" method="post">
+
                 <label for="title">Template name</label>
                 <br>
                 <input
                     type="text"
                     name="title"
                     placeholder="Enter the name of your template"
-                    value="<?php print $title?>"
+                    value="<?=$title?>"
                 >
-                <?php print $titleValidationError?>
+                <?=$titleValidationError?>
                 <br>
+
                 <label for="contents">Template contents</label>
                 <br>
-                <textarea rows="10" cols="90" name="contents"><?php echo $contents ?></textarea>
-                <?php print $contentsValidationError?>
+                <textarea rows="10" cols="90" name="contents"><?=$contents?></textarea>
+                <?=$contentsValidationError?>
+
                 <div class="comments">
                     <h4>Template Comments</h4>
                     <a onClick="addComment()">Add comment</a>
                     <ul id="form-comments">
                     <?php foreach ($comments as $comment): ?>
                         <li>
-                            <input name="comments[]" size="80" type="text" value="<?php echo $comment ?>">
+                            <input name="comments[]" size="80" type="text" value="<?=$comment?>">
                             <a><img class="icon" src="assets/delete.png" alt="Remove Comment"></a>
                         </li>
                     <?php endforeach?>
                     </ul>
-                    <?php print $commentsValidationError?>
+                    <?=$commentsValidationError?>
                 </div>
+
                 <br>
+
                 <?php if ($valid): ?>
                     <input type="submit" name="save" value="Save">
                 <?php else: ?>
                     <input type="submit" name="check" value="Check">
                 <?php endif?>
+
                 <a href="templates.php">Cancel</a>
             </form>
         </div>

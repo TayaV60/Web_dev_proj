@@ -43,7 +43,6 @@ class ApplicantsCoordinator
 
     public function createApplicant($name, $email, $phone, $roles)
     {
-        $message_to_user = '';
         try {
             $result = $this->dbApplicants->createApplicant($name, $email, $phone, $roles);
             $createdApplicant = $this->dbApplicants->getApplicantByName($name);
@@ -51,29 +50,28 @@ class ApplicantsCoordinator
             foreach ($roles as $roleId) {
                 $this->dbApplicantsRoles->createApplicantRole($applicantId, $roleId);
             }
-            $message_to_user = "Applicant '$name' created successfully. The email is $email and their phone number is $phone.";
         } catch (Exception $e) {
             $message = $e->getMessage();
-            $message_to_user = "Could not add applicant. $message";
+            error_log('Create applicant failed: ');
+            error_log(print_r(htmlspecialchars($message), true));
+            throw new Exception("Create applicant failed");
         }
-        return $message_to_user;
     }
 
-    public function updateApplicant($applicantId, $name, $email, $phone, $roles)
+    public function editApplicant($applicantId, $name, $email, $phone, $roles)
     {
-        $message_to_user = '';
         try {
             $editedApplicant = $this->dbApplicants->editApplicant($applicantId, $name, $email, $phone);
             $this->dbApplicantsRoles->clearApplicantRoles($applicantId);
             foreach ($roles as $roleId) {
                 $this->dbApplicantsRoles->createApplicantRole($applicantId, $roleId);
             }
-            $message_to_user = "Applicant '$name' created successfully. The email is $email and their phone number is $phone.";
         } catch (Exception $e) {
             $message = $e->getMessage();
-            $message_to_user = "Could not update applicant. $message";
+            error_log('Edit applicant failed: ');
+            error_log(print_r(htmlspecialchars($message), true));
+            throw new Exception("Edit applicant failed");
         }
-        return $message_to_user;
     }
 
     public function removeApplicant($applicantId)
@@ -88,5 +86,14 @@ class ApplicantsCoordinator
             $message_to_user = "Could not delete applicant. $message";
         }
         return $message_to_user;
+    }
+}
+
+function getRoleTitleFromId($id, $allRoles)
+{
+    foreach ($allRoles as $role) {
+        if ($role["id"] == $id) {
+            return $role["title"];
+        }
     }
 }

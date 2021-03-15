@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
 
     // if the form is valid, the submit button will post a "save", so we can try to save
-    if (isset($_POST['save'])) {
+    if ($valid && isset($_POST['save'])) {
         try {
             if ($id && $mode == 'edit') {
                 // if there is an id and mode is edit, then try to save using the editTemplate method

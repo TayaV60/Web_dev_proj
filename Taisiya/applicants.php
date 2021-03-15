@@ -2,72 +2,71 @@
 include 'page_elements/Page.php';
 include 'coordination/Applicants.php';
 
+function getApplicantRoleTitles($coApplicants, $allRoles, $id)
+{
+    $applicantRoleIds = $coApplicants->getRolesForApplicant($id);
+    $titles = [];
+    foreach ($applicantRoleIds as $applicantRoleId) {
+        $titles[] = getRoleTitleFromId($applicantRoleId, $allRoles);
+    }
+    return implode(", ", $titles);
+}
+
 $page = new Page("Applicants", "Applicants");
 
 $coApplicants = new ApplicantsCoordinator();
 $applicants = $coApplicants->listApplicants();
-$roles = $coApplicants->listRoles();
-
-function getRole($roles, $roleId) {
-    foreach($roles as $role) {
-        if ($roleId == $role["id"]) {
-            return $role;
-        }
-    }
-}
+$allRoles = $coApplicants->listRoles();
 
 print $page->top();
 
 ?>
 
-<a href="create_applicant.php">Create new applicant</a>
+<a href="create_or_edit_applicant.php">Create new applicant</a>
 
 <br>
 <br>
 <table>
-<?php 
-    foreach ($applicants as &$value) {
-        $id = $value["id"];
-        $name = $value["name"];
-        $email = $value ["email"];
-        $phone = $value ["phone"];
-        $editUrl = "edit_applicant.php?id=$id";
-        $deleteUrl = "delete_applicant.php?id=$id";
-
-        $applicantRoleIds = $coApplicants->getRolesForApplicant($id);
-        $rolesToPrint = [];
-        foreach($applicantRoleIds as $applicantRoleId) {
-            $role = getRole($roles, $applicantRoleId);
-            $rolesToPrint[] = $role['title'];
-        }
-
-        echo "<tr>";
-        echo "<td>";
-        echo $name;
-        echo "</td>";
-        echo "<td>";
-        echo $email;
-        echo "</td>";
-        echo "<td>";
-        echo $phone;
-        echo "</td>";
-        echo "<td>";
-        echo implode(", ", $rolesToPrint);
-        echo "</td>";
-        echo "<td>";
-        echo "<a href=\"$editUrl\" title=\"Edit $name\" >";
-        echo "<img class=\"icon\" src=\"assets/edit.png\" alt=\"Edit\">";
-        echo "</a>";
-        echo "</td>";
-        echo "<td>";
-        echo "<a href=\"$deleteUrl\" title=\"Delete $name\" >";
-        echo "<img class=\"icon\" src=\"assets/delete.png\" alt=\"Delete\">";
-        echo "</a>";
-        echo "</td>";
-        echo "</tr>";
-    }
-?>
+<thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Roles</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($applicants as $value): ?>
+            <tr>
+                <td>
+                    <?=$value["name"]?>
+                </td>
+                <td>
+                    <?=$value["email"]?>
+                </td>
+                <td>
+                    <?=$value["phone"]?>
+                </td>
+                <td>
+                    <?=getApplicantRoleTitles($coApplicants, $allRoles, $value["id"])?>
+                </td>
+                <td>
+                    <a href="create_or_edit_applicant.php?id=<?=$value["id"]?>" value="Edit <?=$value["name"]?>" >
+                        <img class="icon" src="assets/edit.png" alt="Edit">
+                    </a>
+                </td>
+                <td>
+                    <a href="delete_applicant.php?id=<?=$value["id"]?>" value="Delete <?=$value["name"]?>" >
+                        <img class="icon" src="assets/delete.png" alt="Delete">
+                    </a>
+                </td>
+            </tr>
+        <?php endforeach?>
+    </tbody>
 </table>
+
 <?php
 
 print $page->bottom();

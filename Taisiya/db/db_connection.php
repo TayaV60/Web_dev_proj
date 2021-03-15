@@ -2,7 +2,7 @@
 
 class DB
 {
-    protected $conn;
+    private $conn;
 
     public function __construct()
     {

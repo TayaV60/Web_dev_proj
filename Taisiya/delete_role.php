@@ -7,32 +7,54 @@ print $page->top();
 
 $dbRoles = new DBRoles();
 
-$id=$_GET['id'];
+$id = $_GET['id'];
+$confirmed = $_GET['confirmed'];
+
+$deleted = false;
+$deletionError = null;
 
 $role = $dbRoles->getRole($id);
 $title = $role["title"];
 
+if ($confirmed) {
+    try {
+        $result = $dbRoles->deleteRole($id);
+        $affectedRows = $result->getAffectedRows();
+        $deleted = true;
+        if ($affectedRows != 1) {
+            throw new Exception("Wrong number of rows deleted ($affectedRows)");
+        }
+    } catch (Exception $e) {
+        $message = $e->getMessage();
+        $deletionError = "Could not delete $message";
+    }
+}
+
 ?>
 <div class="role_form_container">
-    <div class="role_form">
-        <h3>Are you sure you want to delete this role?</h3>
-        <form>
-            <label for="name">Role</label>
+
+    <?php if ($deleted): ?>
+
+        Role <?=$title?> has been deleted.
+
+    <?php elseif ($deletionError): ?>
+
+        <?=$deletionError?>
+
+    <?php else: ?>
+
+        <div class="role_form">
+            <h3>Are you sure you want to delete this role?</h3>
+            <h4>Role title</h4>
+            <?=$title?>
             <br>
-            <input
-                type="text"
-                name="title"
-                value="<?php echo $title ?>"
-                
-            >
-            
-            </div>
             <br>
-        </form>
-        <a href="roles.php">Cancel</a>
-        <a href="delete_role_submitted.php?id=<?php echo $id?>">Delete</a>
-        
-    </div>
+            <a href="roles.php">Cancel</a>
+            <a href="delete_role.php?id=<?=$id?>&confirmed=true">Delete</a>
+        </div>
+
+    <?php endif?>
+
 </div>
 <?php
 

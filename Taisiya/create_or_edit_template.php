@@ -30,7 +30,10 @@ function getMode($id)
 }
 
 // GET variables
-$id = $_GET['id'];
+$id = null;
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+}
 $mode = getMode($id);
 
 // POST input field variables
@@ -42,6 +45,9 @@ $title = null;
 $valid = false;
 $saved = false;
 $errorSaving = null;
+$titleValidationError = null;
+$contentsValidationError = null;
+$commentsValidationError = null;
 
 // if user has not posted yet, setup necessary default values
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -60,7 +66,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     // extract value of input fields from $_POST
     $contents = $_POST['contents'];
     $title = $_POST['title'];
-    $comments = $_POST['comments'];
+    if (isset($_POST['comments'])) {
+        $comments = $_POST['comments'];
+    }
 
     // validate title
     if (strlen($title) < 2) {

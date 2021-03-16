@@ -40,7 +40,10 @@ function selected($id, $applicantRoles)
 }
 
 // GET variables
-$id = $_GET['id'];
+$id = null;
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+}
 $mode = getMode($id);
 
 // POST input field variables
@@ -53,6 +56,10 @@ $applicantRoles = [];
 $valid = false;
 $saved = false;
 $errorSaving = null;
+$nameValidationError = null;
+$emailValidationError = null;
+$phoneValidationError = null;
+$rolesValidationError = null;
 
 // if user has not posted yet, setup necessary default values
 if ($_SERVER["REQUEST_METHOD"] == "GET") {

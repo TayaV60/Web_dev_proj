@@ -4,27 +4,34 @@ include 'db/Roles.php';
 
 $dbRoles = new DBRoles();
 
-function getMode($roleId)
+function getMode($id)
 {
     $mode = 'create';
-    if ($roleId != null) {
+    if ($id != null) {
         $mode = 'edit';
     }
     return $mode;
 }
 
-$roleId = $_GET["id"];
-$mode = getMode($roleId);
+// GET variables
+$id = null;
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+}
+$mode = getMode($id);
 
+// POST input field variables
 $title = null;
 
+// form state variables
 $valid = false;
 $saved = false;
 $errorSaving = null;
+$titleValidationError = null;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if ($mode == 'edit') {
-        $role = $dbRoles->getRole($roleId);
+        $role = $dbRoles->getRole($id);
         $title = $role["title"];
     }
 } else if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -41,9 +48,9 @@ if (!$titleValidationError) {
 
 if ($valid && isset($_POST['save'])) {
     try {
-        if ($roleId && $mode == 'edit') {
+        if ($id && $mode == 'edit') {
 
-            $dbRoles->editRole($roleId, $title);
+            $dbRoles->editRole($id, $title);
         } else {
             $dbRoles->createRole($title);
         }

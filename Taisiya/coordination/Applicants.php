@@ -76,16 +76,15 @@ class ApplicantsCoordinator
 
     public function removeApplicant($applicantId)
     {
-        $message_to_user = '';
         try {
             $this->dbApplicantsRoles->clearApplicantRoles($applicantId);
-            $this->dbApplicants->deleteApplicant($applicantId);
-            $message_to_user = "Applicant '$applicantId' deleted successfully.";
+            return $this->dbApplicants->deleteApplicant($applicantId);
         } catch (Exception $e) {
             $message = $e->getMessage();
-            $message_to_user = "Could not delete applicant. $message";
+            error_log('Remove applicant failed: ');
+            error_log(print_r(htmlspecialchars($message), true));
+            throw new Exception("Remove applicant failed");
         }
-        return $message_to_user;
     }
 }
 

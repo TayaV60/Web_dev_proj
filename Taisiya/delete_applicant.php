@@ -8,6 +8,10 @@ print $page->top();
 $coApplicants = new ApplicantsCoordinator();
 
 $id = $_GET['id'];
+$confirmed = $_GET['confirmed'];
+
+$deleted = false;
+$deletionError = null;
 
 $applicant = $coApplicants->getApplicant($id);
 $name = $applicant["name"];
@@ -19,54 +23,57 @@ $roles = $coApplicants->listRoles();
 
 $applicantRoleTitles = [];
 foreach ($roles as $role) {
-    $id = $role["id"];
-    if (in_array($id, $applicantRoles)) {
+    $roleId = $role["id"];
+    if (in_array($roleId, $applicantRoles)) {
         $applicantRoleTitles[] = $role["title"];
+    }
+}
+
+if ($confirmed) {
+    try {
+        $result = $coApplicants->removeApplicant($id);
+        $affectedRows = $result->getAffectedRows();
+        $deleted = true;
+        if ($affectedRows != 1) {
+            throw new Exception("Wrong number of rows deleted ($affectedRows)");
+        }
+    } catch (Exception $e) {
+        $message = $e->getMessage();
+        $deletionError = "Could not delete $message";
     }
 }
 
 ?>
 <div class="applicant_form_container">
-    <div class="applicant_form">
-        <h3>Are you sure you want to delete this applicant?</h3>
-        <form>
-            <label for="name">Applicant name</label>
+
+    <?php if ($deleted): ?>
+
+        Applicant <?=$name?> has been deleted.
+
+    <?php elseif ($deletionError): ?>
+
+        <?=$deletionError?>
+
+    <?php else: ?>
+
+        <div class="applicant_form">
+            <h3>Are you sure you want to delete this applicant?</h3>
+            <h4>Applicant name</h4>
+            <?=$name?>
+            <h4>Email address</h4>
+            <?=$email?>
+            <h4>Phone number</h4>
+            <?=$phone?>
+            <h4>Roles applied for</h4>
+            <?=$role["title"]?>
+
             <br>
-            <input
-                type="text"
-                name="name"
-                value="<?php echo $name ?>"
+            <a href="applicants.php">Cancel</a>
+            <a href="delete_applicant.php?id=<?=$id?>&confirmed=true">Delete</a>
+        </div>
 
-            >
+    <?php endif?>
 
-            <input
-                type="text"
-                name="position"
-                value="<?php echo implode(",", $applicantRoleTitles) ?>"
-
-            >
-
-            <input
-                type="text"
-                name="email"
-                value="<?php echo $email ?>"
-
-            >
-
-            <input
-                type="text"
-                name="phone"
-                value="<?php echo $phone ?>"
-
-            >
-
-            </div>
-            <br>
-        </form>
-        <a href="applicants.php">Cancel</a>
-        <a href="delete_applicant_submitted.php?id=<?php echo $id ?>">Delete</a>
-
-    </div>
 </div>
 <?php
 

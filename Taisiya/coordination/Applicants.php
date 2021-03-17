@@ -30,6 +30,11 @@ class ApplicantsCoordinator
         return $roles;
     }
 
+    public function getRole($id)
+    {
+        return $this->dbRoles->getRole($id);
+    }
+
     public function getRolesForApplicant($applicantId)
     {
         $dbResult = $this->dbApplicantsRoles->getRoleIdsForApplicant($applicantId);

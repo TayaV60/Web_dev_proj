@@ -1,6 +1,7 @@
 <?php
 include 'db/Templates.php';
 include 'page_elements/Page.php';
+include 'coordination/Supporting_functions.php';
 
 // a DBTemplates object
 $dbTemplates = new DBTemplates();
@@ -19,21 +20,8 @@ Best wishes,
 {{interviewer_name}}
 {{interviewer_email}}";
 
-// returns 'edit' if the id is not null, othewrise returns 'create'
-function getMode($id)
-{
-    $mode = 'create';
-    if ($id != null) {
-        $mode = 'edit';
-    }
-    return $mode;
-}
-
 // GET variables
-$id = null;
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-}
+$id = getQueryParameter('id');
 $mode = getMode($id);
 
 // POST input field variables

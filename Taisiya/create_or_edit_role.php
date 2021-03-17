@@ -1,23 +1,12 @@
 <?php
 include 'page_elements/Page.php';
 include 'db/Roles.php';
+include 'coordination/Supporting_functions.php';
 
 $dbRoles = new DBRoles();
 
-function getMode($id)
-{
-    $mode = 'create';
-    if ($id != null) {
-        $mode = 'edit';
-    }
-    return $mode;
-}
-
 // GET variables
-$id = null;
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-}
+$id = getQueryParameter('id');
 $mode = getMode($id);
 
 // POST input field variables

@@ -1,18 +1,10 @@
 <?php
 include 'page_elements/Page.php';
 include 'coordination/Applicants.php';
+include 'coordination/Supporting_functions.php';
 
 $coApplicants = new ApplicantsCoordinator();
 $allRoles = $coApplicants->listRoles();
-
-function getMode($id)
-{
-    $mode = 'create';
-    if ($id != null) {
-        $mode = 'edit';
-    }
-    return $mode;
-}
 
 function emailValidation($email)
 {
@@ -40,10 +32,7 @@ function selected($id, $applicantRoles)
 }
 
 // GET variables
-$id = null;
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-}
+$id = getQueryParameter('id');
 $mode = getMode($id);
 
 // POST input field variables

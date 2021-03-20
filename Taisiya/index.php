@@ -2,5 +2,15 @@
 include 'page_elements/Page.php';
 
 $page = new Page("Home", "");
+
 print $page->top();
-print $page->bottom();
+
+?>
+
+<a href="register.php">Registration</a>
+
+<a href="login.php">Login</a>
+
+<?php
+
+print $page->bottom();?>

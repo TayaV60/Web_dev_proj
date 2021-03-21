@@ -25,6 +25,26 @@ h3 {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
+h3.feedback {
+  font-size: 14px;
+  text-align: left;
+}
+
+h4.feedback {
+  margin: 5px;
+}
+
+pre.feedback {
+  border: 1px dashed grey;
+  padding: 10px;
+}
+
+.feedback-comments {
+  border: 1px dashed grey;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 .vertical a {
   background-color: rgb(238, 232, 232);
   padding: 10px 0px;

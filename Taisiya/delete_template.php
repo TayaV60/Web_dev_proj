@@ -1,11 +1,12 @@
 <?php
-include 'db/Templates.php';
+include 'coordination/Feedback.php';
 include 'page_elements/Page.php';
 
 $page = new Page("Delete template", "Templates");
 print $page->top();
 
-$dbTemplates = new DBTemplates();
+// a FeedbackCoordinator object
+$coFeedback = new FeedbackCoordinator();
 
 // GET parameters
 $id = $_GET['id'];
@@ -16,14 +17,14 @@ $deleted = false;
 $deletionError = null;
 
 // The template to be deleted
-$template = $dbTemplates->getTemplate($id);
+$template = $coFeedback->getTemplate($id);
 $contents = $template["contents"];
 $title = $template["title"];
-$comments = explode("::::", $template["comments"]);
+$comments = $template["comments"];
 
 if ($confirmed) { // if the user has confirmed, then try to delete
     try {
-        $result = $dbTemplates->deleteTemplate($id);
+        $result = $coFeedback->deleteTemplate($id);
         $affectedRows = $result->getAffectedRows();
         if ($affectedRows == 1) {
             $deleted = true;

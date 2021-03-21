@@ -1,10 +1,10 @@
 <?php
-include 'db/Templates.php';
-include 'page_elements/Page.php';
+include 'coordination/Feedback.php';
 include 'coordination/Supporting_functions.php';
+include 'page_elements/Page.php';
 
-// a DBTemplates object
-$dbTemplates = new DBTemplates();
+// a FeedbackCoordinator object
+$coFeedback = new FeedbackCoordinator();
 
 // A default template to be used if in 'create' mode.
 $DEFAULT_TEMPLATE = "{{date}}
@@ -41,10 +41,10 @@ $commentsValidationError = null;
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if ($mode == 'edit') {
         // if editing, get the existing template from the DB
-        $template = $dbTemplates->getTemplate($id);
+        $template = $coFeedback->getTemplate($id);
         $contents = $template["contents"];
         $title = $template["title"];
-        $comments = explode("::::", $template["comments"]);
+        $comments = $template["comments"];
     } else {
         // if creating, use the default template
         $contents = $DEFAULT_TEMPLATE;
@@ -60,17 +60,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
     // validate title
     if (strlen($title) < 2) {
-        $titleValidationError = "Title is too small";
+        $titleValidationError = "Title is not valid";
     }
 
     // validate contents
     if (strlen($contents) < 100) {
-        $contentsValidationError = "Contents is too small";
+        $contentsValidationError = "Insufficient contents";
     }
 
     // validate comments
     if (!$comments || count($comments) < 1) {
-        $commentsValidationError = "Comments is too small";
+        $commentsValidationError = "Add comments to continue";
     }
 
     // if all fields are valid, then the form is valid
@@ -83,10 +83,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         try {
             if ($id && $mode == 'edit') {
                 // if there is an id and mode is edit, then try to save using the editTemplate method
-                $dbTemplates->editTemplate($id, $title, $contents, $comments);
+                $coFeedback->editTemplate($id, $title, $contents, $comments);
             } else {
                 // if not, try to create
-                $dbTemplates->createTemplate($title, $contents, $comments);
+                $coFeedback->createTemplate($title, $contents, $comments);
             }
             $saved = true;
         } catch (Exception $e) {

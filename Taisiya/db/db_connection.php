@@ -31,7 +31,8 @@ class DB
      */
     protected function query($query, $params = [])
     {
-
+        // error_log("Query is '$query'");
+        // error_log(print_r($params, true));
         $stmt = $this->conn->prepare($query);
         if (false === $stmt) {
             error_log('PDO prepare() failed: ');
@@ -59,8 +60,8 @@ class DB
 
         $dbResult = new DBStatementResults($stmt);
 
-        error_log(print_r($dbResult->getAffectedRows(), true));
-        error_log(print_r($dbResult->getResult(), true));
+        // error_log(print_r($dbResult->getAffectedRows(), true));
+        // error_log(print_r($dbResult->getResult(), true));
 
         $stmt = null;
 

@@ -6,7 +6,7 @@ class DBTemplates extends DB
 
     public function listTemplates()
     {
-        $query = "SELECT id, title FROM Templates";
+        $query = "SELECT * FROM Templates";
         $dbResult = $this->query($query);
         return $dbResult->getResult();
     }
@@ -22,24 +22,22 @@ class DBTemplates extends DB
 
     public function createTemplate($title, $contents, $comments)
     {
-        $commentsJoined = implode("::::", $comments);
-        $query = 'INSERT INTO Templates (title, contents, comments) VALUES (:title, :contents, :commentsJoined)';
+        $query = 'INSERT INTO Templates (title, contents, comments) VALUES (:title, :contents, :comments)';
         $params = array(
             ":title" => $title,
             ":contents" => $contents,
-            ":commentsJoined" => $commentsJoined,
+            ":comments" => $comments,
         );
         return $this->query($query, $params);
     }
 
     public function editTemplate($id, $title, $contents, $comments)
     {
-        $commentsJoined = implode("::::", $comments);
-        $query = 'UPDATE Templates SET title = :title, contents = :contents, comments = :commentsJoined WHERE id = :id';
+        $query = 'UPDATE Templates SET title = :title, contents = :contents, comments = :comments WHERE id = :id';
         $params = array(
             ":title" => $title,
             ":contents" => $contents,
-            ":commentsJoined" => $commentsJoined,
+            ":comments" => $comments,
             ":id" => $id,
         );
         return $this->query($query, $params);

@@ -26,3 +26,12 @@ CREATE TABLE Applicants_Roles(
     FOREIGN KEY (applicant_id) REFERENCES Applicants (id),
     FOREIGN KEY (role_id) REFERENCES Roles (id)
 );
+
+CREATE TABLE Users(
+    id int NOT NULL AUTO_INCREMENT,
+    username varchar (100) DEFAULT NULL, 
+    password varchar (200) DEFAULT NULL,
+    name_surname varchar (100) DEFAULT NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY (username)
+);

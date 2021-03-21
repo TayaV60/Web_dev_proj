@@ -8,12 +8,14 @@ $page = new Page("Home", "");
 
 $username = null;
 $password = null;
+$name_surname = null;
 
 $valid = false;
 $saved = false;
 $errorSaving = null;
 $usernameValidationError = null;
 $passwordValidationError = null;
+$namesurnameValidationError = null;
 
 function usernameValidation($username)
 {
@@ -34,6 +36,7 @@ function passwordValidation($password)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
+    $name_surname = $_POST['name_surname'];
 
     if (usernameValidation($username) == false) {
         $usernameValidationError = "The username format is incorrect";
@@ -43,13 +46,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $passwordValidationError = "The password is weak";
     }
 
-    if (!$usernameValidationError && !$passwordValidationError) {
+    if (strlen($name_surname) < 1) {
+        $namesurnameValidationError = "Please enter your name and surname";
+    }
+
+    if (!$usernameValidationError && !$passwordValidationError && !$namesurnameValidationError) {
         $valid = true;
     }
 
     if ($valid && isset($_POST['save'])) {
         try {
-            $dbUsers->createUser($username, $password);
+            $dbUsers->createUser($username, $password, $name_surname);
             $saved = true;
         } catch (Exception $e) {
             $message = $e->getMessage();
@@ -65,7 +72,7 @@ print $page->top();
 ?>
 
 <?php if ($saved): ?>
-    User '<?=$username?>' created successfully.
+    User '<?=$name_surname?>' created successfully.
 
 <?php elseif ($errorSaving): ?>
 
@@ -101,6 +108,18 @@ print $page->top();
             value="<?=$password?>"
         >
         <?=$passwordValidationError?>
+
+        <br>
+        <br>
+        <label for="name_surname">Name and surname of the user</label>
+        <br>
+        <input
+            type="text"
+            name="name_surname"
+            placeholder="Enter the name and the surname of the user"
+            value="<?=$name_surname?>"
+        >
+        <?=$namesurnameValidationError?>
 
         <br>
         <br>

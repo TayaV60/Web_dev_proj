@@ -4,7 +4,7 @@ include 'db/Users.php';
 
 $dbUsers = new DBUsers();
 
-$page = new Page("Home", "");
+$page = new Page("Registration", "", false);
 
 $username = null;
 $password = null;
@@ -65,14 +65,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$page = new Page("Home", "Create user");
-
 print $page->top();
 
 ?>
 
 <?php if ($saved): ?>
-    User '<?=$name_surname?>' created successfully.
+    User '<?=$name_surname?>' created successfully. You can now <a href="login.php">login</a>.
 
 <?php elseif ($errorSaving): ?>
 
@@ -135,4 +133,4 @@ print $page->top();
 
 <?php
 
-print $page->bottom();?>
+print $page->bottom();

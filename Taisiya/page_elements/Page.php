@@ -7,10 +7,15 @@ class Page
     private $title;
     private $tab_title;
 
-    public function __construct($title, $tab_title)
+    public function __construct($title, $tab_title, $needsToBeLoggedIn = true)
     {
         $this->title = $title;
         $this->tab_title = $tab_title;
+        $loggedIn = $this->isLoggedIn();
+        if ($needsToBeLoggedIn && !$loggedIn) {
+            header("Location: login_or_register.php");
+            exit();
+        }
     }
 
     public function top()
@@ -47,5 +52,11 @@ class Page
                 </div>
             </body>
         ";
+    }
+
+    private function isLoggedIn()
+    {
+        $isLoggedIn = array_key_exists('PHP_AUTH_USER', $_SERVER) && array_key_exists('PHP_AUTH_PW', $_SERVER);
+        return $isLoggedIn;
     }
 }

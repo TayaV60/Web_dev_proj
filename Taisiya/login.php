@@ -2,7 +2,7 @@
 include 'page_elements/Page.php';
 include 'db/Users.php';
 
-$page = new Page("Login", "Login");
+$page = new Page("Login", "Login", false);
 $dbUsers = new DBUsers();
 
 print $page->top();
@@ -41,4 +41,4 @@ if (!isset($_SERVER['PHP_AUTH_USER']) &&
 
 <?php
 
-print $page->bottom();?>
+print $page->bottom();

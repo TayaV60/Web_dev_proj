@@ -28,7 +28,9 @@ if (!isset($_SERVER['PHP_AUTH_USER']) &&
     } else {
         $userverified = $dbUsers->verifyUser($username, $password);
         if ($userverified) {
-            echo "<p>Hello {$username}. Your password is {$password}.</p>";
+            echo "<p>Hello {$username}.</p>";
+            header("Location: index.php");
+            exit();
         } else {
             header('HTTP/1.1 401 Unauthorized');
             header('WWW-Authenticate: Basic realm="ARU"');

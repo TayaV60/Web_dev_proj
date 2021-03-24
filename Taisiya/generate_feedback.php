@@ -1,8 +1,8 @@
 <?php
-include 'page_elements/Page.php';
-include 'coordination/Applicants.php';
-include 'coordination/Feedback.php';
-include 'coordination/Supporting_functions.php';
+require_once 'page_elements/Page.php';
+require_once 'coordination/Applicants.php';
+require_once 'coordination/Feedback.php';
+require_once 'coordination/Supporting_functions.php';
 
 function applicantSelected($id1, $id2)
 {
@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $templateId = getPostParameter('templateId');
     if ($templateId) {
         $template = $coFeedback->getTemplate($templateId);
-        $username = $_SERVER['PHP_AUTH_USER'];
+        $username = $_SESSION['username'];
         $user = $coFeedback->getUserByUsername($username);
         $contents = $template["contents"];
         $comments = $template["comments"];

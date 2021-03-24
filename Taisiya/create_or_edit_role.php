@@ -1,7 +1,7 @@
 <?php
-include 'page_elements/Page.php';
-include 'db/Roles.php';
-include 'coordination/Supporting_functions.php';
+require_once 'coordination/Supporting_functions.php';
+require_once 'db/Roles.php';
+require_once 'page_elements/Page.php';
 
 $dbRoles = new DBRoles();
 

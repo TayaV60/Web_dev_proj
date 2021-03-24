@@ -1,7 +1,7 @@
 <?php
-include 'db/Applicants.php';
-include 'db/ApplicantsRoles.php';
-include 'db/Roles.php';
+require_once 'db/Applicants.php';
+require_once 'db/ApplicantsRoles.php';
+require_once 'db/Roles.php';
 
 class ApplicantsCoordinator
 {

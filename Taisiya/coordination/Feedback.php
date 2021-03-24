@@ -1,7 +1,7 @@
 <?php
 
-include 'db/Templates.php';
-include 'db/Users.php';
+require_once 'db/Templates.php';
+require_once 'db/Users.php';
 
 class FeedbackCoordinator
 {

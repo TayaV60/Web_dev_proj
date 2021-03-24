@@ -1,7 +1,7 @@
 <?php
-include 'page_elements/Page.php';
-include 'coordination/Applicants.php';
-include 'coordination/Supporting_functions.php';
+require_once 'coordination/Applicants.php';
+require_once 'coordination/Supporting_functions.php';
+require_once 'page_elements/Page.php';
 
 $coApplicants = new ApplicantsCoordinator();
 $allRoles = $coApplicants->listRoles();

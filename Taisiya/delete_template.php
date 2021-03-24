@@ -1,6 +1,6 @@
 <?php
-include 'coordination/Feedback.php';
-include 'page_elements/Page.php';
+require_once 'coordination/Feedback.php';
+require_once 'page_elements/Page.php';
 
 $page = new Page("Delete template", "Templates");
 print $page->top();

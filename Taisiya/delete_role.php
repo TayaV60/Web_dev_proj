@@ -1,6 +1,6 @@
 <?php
-include 'db/Roles.php';
-include 'page_elements/Page.php';
+require_once 'db/Roles.php';
+require_once 'page_elements/Page.php';
 
 $page = new Page("Delete role", "Roles");
 print $page->top();

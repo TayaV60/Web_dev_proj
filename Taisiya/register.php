@@ -1,6 +1,6 @@
 <?php
-include 'page_elements/Page.php';
-include 'db/Users.php';
+require_once 'db/Users.php';
+require_once 'page_elements/Page.php';
 
 $dbUsers = new DBUsers();
 
@@ -85,7 +85,7 @@ print $page->top();
 
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']); ?>" method="post">
 
-        <label for="username">Username</label>
+        <label for="username">Username (must be valid email address)</label>
         <br>
         <input
             type="text"
@@ -100,7 +100,7 @@ print $page->top();
         <label for="password">Password</label>
         <br>
         <input
-            type="text"
+            type="password"
             name="password"
             placeholder="Enter the password"
             value="<?=$password?>"

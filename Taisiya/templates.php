@@ -1,6 +1,6 @@
 <?php
-include 'page_elements/Page.php';
-include 'db/Templates.php';
+require_once 'db/Templates.php';
+require_once 'page_elements/Page.php';
 
 $page = new Page("List existing templates", "Templates");
 

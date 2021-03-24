@@ -1,6 +1,6 @@
 <?php
-include 'coordination/Applicants.php';
-include 'page_elements/Page.php';
+require_once 'coordination/Applicants.php';
+require_once 'page_elements/Page.php';
 
 $page = new Page("Delete applicant", "Applicants");
 print $page->top();

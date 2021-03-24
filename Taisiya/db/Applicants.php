@@ -1,5 +1,5 @@
 <?php
-include_once 'db_connection.php';
+require_once 'db_connection.php';
 
 class DBApplicants extends DB
 {

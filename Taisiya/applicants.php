@@ -1,6 +1,6 @@
 <?php
-include 'page_elements/Page.php';
-include 'coordination/Applicants.php';
+require_once 'coordination/Applicants.php';
+require_once 'page_elements/Page.php';
 
 function getApplicantRoleTitles($coApplicants, $allRoles, $id)
 {

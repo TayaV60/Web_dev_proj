@@ -1,7 +1,7 @@
 <?php
-include 'coordination/Feedback.php';
-include 'coordination/Supporting_functions.php';
-include 'page_elements/Page.php';
+require_once 'coordination/Feedback.php';
+require_once 'coordination/Supporting_functions.php';
+require_once 'page_elements/Page.php';
 
 // a FeedbackCoordinator object
 $coFeedback = new FeedbackCoordinator();

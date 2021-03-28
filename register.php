@@ -60,7 +60,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $saved = true;
         } catch (Exception $e) {
             $message = $e->getMessage();
-            $errorSaving = "Could not create user $message.";
+            error_log($e);
+            if ($e->errorInfo[1] == 1062) {
+                // duplicate entry
+                $errorSaving = "User already exists.";
+            } else {
+                $errorSaving = "Could not create user.";
+            }
         }
     }
 }

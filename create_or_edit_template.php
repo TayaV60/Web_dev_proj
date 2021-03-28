@@ -90,7 +90,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             }
             $saved = true;
         } catch (Exception $e) {
-            $errorSaving = "Could not create template.";
+            error_log($e);
+            if ($e->errorInfo[1] == 1062) {
+                // duplicate entry
+                $errorSaving = "Template already exists.";
+            } else {
+                $errorSaving = "Could not create template.";
+            }
         }
     }
 

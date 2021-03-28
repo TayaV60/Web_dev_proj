@@ -1,6 +1,6 @@
 CREATE TABLE Templates (
     id int NOT NULL AUTO_INCREMENT,
-    title varchar (255),
+    title varchar (255) UNIQUE,
     contents varchar (10000),
     comments TEXT,
     PRIMARY KEY (id)
@@ -16,22 +16,21 @@ CREATE TABLE Applicants (
 
 CREATE TABLE Roles (
     id int NOT NULL AUTO_INCREMENT,
-    title varchar (100),
+    title varchar (100) UNIQUE,
     PRIMARY KEY (id)
 );
 
-CREATE TABLE Applicants_Roles(
+CREATE TABLE Applicants_Roles (
     applicant_id int NOT NULL,
     role_id int NOT NULL,
     FOREIGN KEY (applicant_id) REFERENCES Applicants (id),
     FOREIGN KEY (role_id) REFERENCES Roles (id)
 );
 
-CREATE TABLE Users(
+CREATE TABLE Users (
     id int NOT NULL AUTO_INCREMENT,
-    username varchar (100) DEFAULT NULL, 
-    password varchar (200) DEFAULT NULL,
-    name_surname varchar (100) DEFAULT NULL,
-    PRIMARY KEY (id),
-    UNIQUE KEY (username)
+    username varchar (100) NOT NULL UNIQUE, 
+    password varchar (200) NOT NULL,
+    name_surname varchar (100) NOT NULL,
+    PRIMARY KEY (id)
 );

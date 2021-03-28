@@ -46,7 +46,7 @@ class Page
             <body>
 
                 <div class='header'>
-                    <h1>Happy Tech</h1>
+                    <h1><a href='index.php' class='titlelinks' >HappyTech</a></h1>
                     <h3>HR tool for writing application feedback</h3>
                 </div>
                 $top_menu $logout

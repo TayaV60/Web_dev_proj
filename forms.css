@@ -1,3 +1,7 @@
+:root {
+  --link-color: #56595a;
+}
+
 body {
   font-family: 'Times New Roman', Times, serif;
   background-color:whitesmoke;
@@ -141,16 +145,19 @@ th, td {
   list-style: none;
 }
 
-a.links {
-  font-size: 15px;
-  color: #56595a;
+a.titlelinks {
+  color: var(--link-color);
 }
 
-a.links:hover{
+a.links {
+  font-size: 15px;
+  color: var(--link-color);
+}
+
+a.links:hover, a.titlelinks:hover {
   color: black;
 }
 
 .welcome {
-  color: #56595a;
+  color: var(--link-color);
 }
-  

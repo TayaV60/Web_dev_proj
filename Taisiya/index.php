@@ -7,8 +7,6 @@ print $page->top();
 
 ?>
 
-<h3>HR tool for writing application feedback</h3>
-
 <p>
 To start, create a list of current positions using the Roles page. You can create templates for different interview stages using the Templates page. You can then enter applicants using the Applicants page, assigning them to a list of roles.
 </p>

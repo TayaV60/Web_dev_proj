@@ -30,7 +30,7 @@ class Page
             $user = $this->dbUsers->getUserByUsername($_SESSION['username']);
             $name = $user["name_surname"];
             $logout = "
-                <span>Welcome, $name. <a href='logout.php'>Logout</a><span>
+                <span>Welcome, $name. <a class='links' href='logout.php'>Logout</a><span>
             ";
         }
 

@@ -22,8 +22,7 @@ print $page->top();
 
 ?>
 
-<a href="create_or_edit_applicant.php">Create new applicant</a>
-
+<a class='links' href="create_or_edit_applicant.php">Create new applicant</a>
 <br>
 <br>
 <table>

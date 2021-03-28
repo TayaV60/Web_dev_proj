@@ -11,8 +11,7 @@ print $page->top();
 
 ?>
 
-<a href="create_or_edit_role.php">Create new role</a>
-
+<a class='links' href="create_or_edit_role.php">Create new role</a>
 <br>
 <br>
 <table>

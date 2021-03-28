@@ -11,8 +11,7 @@ print $page->top();
 
 ?>
 
-<a href="create_or_edit_template.php">Create new template</a>
-
+<a class='links' href="create_or_edit_template.php">Create new template</a>
 <br>
 <br>
 <table>

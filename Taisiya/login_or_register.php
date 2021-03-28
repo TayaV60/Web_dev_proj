@@ -8,7 +8,9 @@ print $page->top();
 ?>
 
 <p>
-Please either <a href="register.php">register</a> or <a href="login.php">login</a>.
+<div class='links'>
+Please either <a class='links' href="register.php">register</a> or <a class='links' href="login.php">login</a>.
+</div>
 </p>
 
 <?php

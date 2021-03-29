@@ -1,86 +1,32 @@
 <?php
-require_once 'coordination/Supporting_functions.php';
-require_once 'db/Roles.php';
+
+require_once 'coordination/Roles.php';
 require_once 'page_elements/Page.php';
 
-$dbRoles = new DBRoles();
+$handler = new RoleFormHandler();
+$data = $handler->handleCreateOrEdit();
 
-// GET variables
-$id = getQueryParameter('id');
-$mode = getMode($id);
-
-// POST input field variables
-$title = null;
-
-// form state variables
-$valid = false;
-$saved = false;
-$errorSaving = null;
-$titleValidationError = null;
-
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if ($mode == 'edit') {
-        $role = $dbRoles->getRole($id);
-        $title = $role["title"];
-    }
-} else if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $title = $_POST['title'];
-}
-
-if (strlen($title) < 4) {
-    $titleValidationError = "Name is too short";
-}
-
-if (!$titleValidationError) {
-    $valid = true;
-}
-
-if ($valid && isset($_POST['save'])) {
-    try {
-        if ($id && $mode == 'edit') {
-
-            $dbRoles->editRole($id, $title);
-        } else {
-            $dbRoles->createRole($title);
-        }
-        $saved = true;
-    } catch (Exception $e) {
-        error_log($e);
-        if ($e->errorInfo[1] == 1062) {
-            // duplicate entry
-            $errorSaving = "Role already exists.";
-        } else {
-            $errorSaving = "Could not create role.";
-        }
-    }
-}
-
-$pageTitle = 'Create a new role';
-if ($mode == 'edit') {
-    $pageTitle = 'Edit a role';
-}
-
-$page = new Page($pageTitle, "Roles");
+$page = new Page($handler->pageTitle, "Roles");
 print $page->top();
 
 ?>
 
-<?php if ($saved): ?>
-    Role '<?=$title?>' saved successfully.
+<?php if ($data->saved): ?>
+    Role '<?=$data->title?>' saved successfully.
 
     <h3>Title</h3>
-    <div><?=$title?></div>
+    <div><?=$data->title?></div>
 
-<?php elseif ($errorSaving): ?>
+<?php elseif ($data->errorSaving): ?>
 
-    <?=$errorSaving?>
+    <?=$data->errorSaving?>
 
 <?php else: ?>
 
     <div class="role_form_container">
         <div class="role_form">
 
-            <?php if ($mode == 'create'): ?>
+            <?php if ($hanlder->mode == 'create'): ?>
                 <h3>Create a new role</h3>
             <?php else: ?>
                 <h3>Edit existing applicant</h3>
@@ -94,14 +40,14 @@ print $page->top();
                     type="text"
                     name="title"
                     placeholder="Enter the title of new role"
-                    value="<?=$title?>"
+                    value="<?=$data->title?>"
                 >
 
-                <?=$titleValidationError?>
+                <?=$data->titleValidationError?>
 
                 <br>
                 <br>
-                <?php if ($valid): ?>
+                <?php if ($data->valid): ?>
                     <input type="submit" name="save" value="Save">
                 <?php else: ?>
                     <input type="submit" name="check" value="Check">

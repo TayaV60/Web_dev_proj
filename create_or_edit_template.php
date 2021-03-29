@@ -1,139 +1,37 @@
 <?php
-require_once 'coordination/Feedback.php';
-require_once 'coordination/Supporting_functions.php';
+require_once 'coordination/Templates.php';
 require_once 'page_elements/Page.php';
 
-// a FeedbackCoordinator object
-$coFeedback = new FeedbackCoordinator();
+$handler = new TemplateFormHandler();
+$data = $handler->handleCreateOrEdit();
 
-// A default template to be used if in 'create' mode.
-$DEFAULT_TEMPLATE = "{{date}}
-{{applicant_name}}
-{{applicant_email}}
-
-Dear {{applicant_name}},
-
-Thank you for your application to the position of {{position_title}} at HappyTech.
-We wish you all the best in your job search.
-
-Best wishes,
-{{interviewer_name}}
-{{interviewer_email}}";
-
-// GET variables
-$id = getQueryParameter('id');
-$mode = getMode($id);
-
-// POST input field variables
-$comments = [];
-$contents = null;
-$title = null;
-
-// form state variables
-$valid = false;
-$saved = false;
-$errorSaving = null;
-$titleValidationError = null;
-$contentsValidationError = null;
-$commentsValidationError = null;
-
-// if user has not posted yet, setup necessary default values
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if ($mode == 'edit') {
-        // if editing, get the existing template from the DB
-        $template = $coFeedback->getTemplate($id);
-        $contents = $template["contents"];
-        $title = $template["title"];
-        $comments = $template["comments"];
-    } else {
-        // if creating, use the default template
-        $contents = $DEFAULT_TEMPLATE;
-    }
-} else if ($_SERVER["REQUEST_METHOD"] == "POST") { // if user has posted
-
-    // extract value of input fields from $_POST
-    $contents = $_POST['contents'];
-    $title = $_POST['title'];
-    if (isset($_POST['comments'])) {
-        $comments = $_POST['comments'];
-    }
-
-    // validate title
-    if (strlen($title) < 2) {
-        $titleValidationError = "Title is not valid";
-    }
-
-    // validate contents
-    if (strlen($contents) < 100) {
-        $contentsValidationError = "Insufficient contents";
-    }
-
-    // validate comments
-    if (!$comments || count($comments) < 1) {
-        $commentsValidationError = "Add comments to continue";
-    }
-
-    // if all fields are valid, then the form is valid
-    if (!$titleValidationError && !$contentsValidationError && !$commentsValidationError) {
-        $valid = true;
-    }
-
-    // if the form is valid, the submit button will post a "save", so we can try to save
-    if ($valid && isset($_POST['save'])) {
-        try {
-            if ($id && $mode == 'edit') {
-                // if there is an id and mode is edit, then try to save using the editTemplate method
-                $coFeedback->editTemplate($id, $title, $contents, $comments);
-            } else {
-                // if not, try to create
-                $coFeedback->createTemplate($title, $contents, $comments);
-            }
-            $saved = true;
-        } catch (Exception $e) {
-            error_log($e);
-            if ($e->errorInfo[1] == 1062) {
-                // duplicate entry
-                $errorSaving = "Template already exists.";
-            } else {
-                $errorSaving = "Could not create template.";
-            }
-        }
-    }
-
-}
-
-$pageTitle = 'Create a new template';
-if ($mode == 'edit') {
-    $pageTitle = 'Edit a new template';
-}
-
-$page = new Page($pageTitle, "Templates");
+$page = new Page($data->pageTitle, "Templates");
 print $page->top();
 
 ?>
 
-<?php if ($saved): ?>
-    Template '<?=$title?>' saved successfully.
+<?php if ($data->saved): ?>
+    Template '<?=$data->title?>' saved successfully.
 
     <h3>Contents</h3>
-    <pre><?=$contents?></pre>
+    <pre><?=$data->contents?></pre>
 
     <h3>Comments</h3>
-    <?php foreach ($comments as $comment): ?>
+    <?php foreach ($data->comments as $comment): ?>
         <br>
         <input type='checkbox' disabled checked> <?=$comment?>
     <?php endforeach?>
 
-<?php elseif ($errorSaving): ?>
+<?php elseif ($data->errorSaving): ?>
 
-    <?=$errorSaving?>
+    <?=$data->errorSaving?>
 
 <?php else: ?>
 
     <div class="template_form_container">
         <div class="template_form">
 
-            <?php if ($mode == 'create'): ?>
+            <?php if ($data->mode == 'create'): ?>
                 <h3>Create a new template</h3>
             <?php else: ?>
                 <h3>Edit existing template</h3>
@@ -147,33 +45,33 @@ print $page->top();
                     type="text"
                     name="title"
                     placeholder="Enter the name of your template"
-                    value="<?=$title?>"
+                    value="<?=$data->title?>"
                 >
-                <?=$titleValidationError?>
+                <?=$data->titleValidationError?>
                 <br>
 
                 <label for="contents">Template contents</label>
                 <br>
-                <textarea rows="10" cols="90" name="contents"><?=$contents?></textarea>
-                <?=$contentsValidationError?>
+                <textarea rows="10" cols="90" name="contents"><?=$data->contents?></textarea>
+                <?=$data->contentsValidationError?>
 
                 <div class="comments">
                     <h4>Template Comments</h4>
                     <a onClick="addComment()">Add comment</a>
                     <ul id="form-comments">
-                    <?php foreach ($comments as $comment): ?>
+                    <?php foreach ($data->comments as $comment): ?>
                         <li>
                             <input name="comments[]" size="80" type="text" value="<?=$comment?>">
                             <a><img class="icon" src="assets/delete.png" alt="Remove Comment"></a>
                         </li>
                     <?php endforeach?>
                     </ul>
-                    <?=$commentsValidationError?>
+                    <?=$data->commentsValidationError?>
                 </div>
 
                 <br>
 
-                <?php if ($valid): ?>
+                <?php if ($data->valid): ?>
                     <input type="submit" name="save" value="Save">
                 <?php else: ?>
                     <input type="submit" name="check" value="Check">
@@ -211,7 +109,7 @@ print $page->top();
     }
 
     function addComment() {
-        const index = formComments.getElementsByTagName('li').length
+        const index = formComments.getElementsByTagName('li').length + 1
         formComments.innerHTML += `
         <li>
             <input name="comments[]" size="80" type="text" value="Candidate comment ${index}">

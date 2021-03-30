@@ -12,7 +12,7 @@ We wish you all the best in your job search.
 Best wishes, 
 {{interviewer_name}} 
 {{interviewer_email}}', 
-'hello::::goodbye');
+'CV is not well formatted::::CV has spelling mistakes');
 
 INSERT INTO Templates (title, contents, comments)
 VALUES ('Phone interview', '{{date}}
@@ -35,7 +35,7 @@ On behalf of HappyTech, I thank you for your time, interest and effort, and I wi
 Regards,
 {{interviewer_name}}
 {{interviewer_email}}', 
-'hello::::goodbye');
+'Candidate did not seem like a good team fit::::Candidate failed to answer basic technical questions');
 
 INSERT INTO Templates (title, contents, comments)
 VALUES ('Technical interview', '{{date}}
@@ -55,5 +55,5 @@ On behalf of HappyTech, I thank you for your time, interest and effort, and I wi
 Regards,
 {{interviewer_name}}
 {{interviewer_email}}', 
-'hello::::goodbye');
+'Candidate could not solve problem that was set::::Candidate seemed to lack relevant experience when questioned about technical issues');
 

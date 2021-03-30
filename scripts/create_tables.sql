@@ -10,7 +10,7 @@ CREATE TABLE Applicants (
     id int NOT NULL AUTO_INCREMENT,
     name varchar (100) UNIQUE,
     email varchar (100),
-    phone BIGINT (25),
+    phone varchar (25),
     PRIMARY KEY (id)
 );
 

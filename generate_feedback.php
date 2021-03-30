@@ -1,10 +1,9 @@
 <?php
 require_once 'page_elements/Page.php';
-require_once 'coordination/Applicants.php';
 require_once 'coordination/Feedback.php';
 require_once 'coordination/Supporting_functions.php';
 
-function applicantSelected($id1, $id2)
+function applicantSelectedIfIdsMatch($id1, $id2)
 {
     if ($id1 == $id2) {
         return "SELECTED";
@@ -20,66 +19,8 @@ function commentChecked($key, $selectedComments)
     }
 }
 
-$coApplicants = new ApplicantsCoordinator();
-$coFeedback = new FeedbackCoordinator();
-
-//GET variable
-$id = getQueryParameter('id');
-
-//POST input field variables
-$applicantId = null;
-$templateId = null;
-$roleId = null;
-$selectedComments = [];
-
-// form state variables
-$preview = false;
-
-// variables from database
-$applicantRoles = null;
-$applicant = null;
-$role = null;
-$template = null;
-$contents = "";
-$comments = [];
-$user = null;
-
-$applicants = $coApplicants->listApplicants();
-$allRoles = $coApplicants->listRoles();
-$allTemplates = $coFeedback->listTemplates();
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $applicantId = getPostParameter('applicantId');
-    if ($applicantId) {
-        $applicant = $coApplicants->getApplicant($applicantId);
-        $applicantRoles = $coApplicants->getRolesForApplicant($applicantId);
-    }
-    $roleId = getPostParameter('roleId');
-    if ($roleId) {
-        $role = $coApplicants->getRole($roleId);
-    }
-    $templateId = getPostParameter('templateId');
-    if ($templateId) {
-        $template = $coFeedback->getTemplate($templateId);
-        $username = $_SESSION['username'];
-        $user = $coFeedback->getUserByUsername($username);
-        $contents = $template["contents"];
-        $comments = $template["comments"];
-        $contents = str_replace("{{applicant_name}}", $applicant["name"], $contents);
-        $contents = str_replace("{{applicant_email}}", $applicant["email"], $contents);
-        $date = new DateTime();
-        $contents = str_replace("{{date}}", $date->format('d/m/y'), $contents);
-        $contents = str_replace("{{position_title}}", $role["title"], $contents);
-        $contents = str_replace("{{interviewer_name}}", $user["name_surname"], $contents);
-        $contents = str_replace("{{interviewer_email}}", $user["username"], $contents);
-    }
-    if (isset($_POST["selectedComments"])) {
-        $selectedComments = $_POST["selectedComments"];
-    }
-    if (isset($_POST['preview'])) {
-        $preview = true;
-    }
-}
+$handler = new FeedbackFormHandler();
+$data = $handler->handleGenerateFeedback();
 
 $page = new Page("Generate Feedback", "Generate feedback");
 print $page->top();
@@ -91,43 +32,43 @@ print $page->top();
     <div class="form_form">
 
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']); ?>" method="post">
-            <?php if ($applicant): ?>
-                <h4 class="feedback" >Selected applicant: <?=$applicant["name"]?></h4>
-                <input type="hidden" name="applicantId" value="<?=$applicant["id"]?>">
+            <?php if ($data->applicant): ?>
+                <h4 class="feedback" >Selected applicant: <?=$data->applicant["name"]?></h4>
+                <input type="hidden" name="applicantId" value="<?=$data->applicant["id"]?>">
             <?php else: ?>
             <select name="applicantId" onchange="if (this.selectedIndex) this.form.submit()" >
                 <option value='-1'>Select applicant</option>
-                <?php foreach ($applicants as $applicant): ?>
-                    <option value='<?=$applicant["id"]?>' <?=applicantSelected($applicant["id"], $applicantId)?> >
+                <?php foreach ($data->applicants as $applicant): ?>
+                    <option value='<?=$applicant["id"]?>' <?=applicantSelectedIfIdsMatch($applicant["id"], $data->applicantId)?> >
                         <?=$applicant["name"]?>
                     </option>
                 <?php endforeach?>
             </select>
             <?php endif?>
 
-            <?php if ($applicantRoles): ?>
-                <?php if ($role): ?>
-                    <h4 class="feedback" >Selected role: <?=$role["title"]?></h4>
-                    <input type="hidden" name="roleId" value="<?=$role["id"]?>">
+            <?php if ($data->applicantRoles): ?>
+                <?php if ($data->role): ?>
+                    <h4 class="feedback" >Selected role: <?=$data->role["title"]?></h4>
+                    <input type="hidden" name="roleId" value="<?=$data->role["id"]?>">
                 <?php else: ?>
                     <select name="roleId" onchange="if (this.selectedIndex) this.form.submit()">
                         <option value='-1'>Select role</option>
-                        <?php foreach ($applicantRoles as $roleId): ?>
+                        <?php foreach ($data->applicantRoles as $roleId): ?>
                             <option value=<?=$roleId?> >
-                                <?=getRoleTitleFromId($roleId, $allRoles)?>
+                                <?=getRoleTitleFromId($roleId, $data->allRoles)?>
                             </option>
                         <?php endforeach?>
                     </select>
                 <?php endif?>
             <?php endif?>
-            <?php if ($role && $applicant): ?>
-                <?php if ($template): ?>
-                    <h4 class="feedback" >Selected template: <?=$template["title"]?></h4>
-                    <input type="hidden" name="templateId" value="<?=$template["id"]?>">
+            <?php if ($data->role && $data->applicant): ?>
+                <?php if ($data->template): ?>
+                    <h4 class="feedback" >Selected template: <?=$data->template["title"]?></h4>
+                    <input type="hidden" name="templateId" value="<?=$data->template["id"]?>">
                 <?php else: ?>
                     <select name="templateId" onchange="if (this.selectedIndex) this.form.submit()">
                         <option value='-1'>Select template</option>
-                        <?php foreach ($allTemplates as $template): ?>
+                        <?php foreach ($data->allTemplates as $template): ?>
                             <option value=<?=$template["id"]?> >
                                 <?=$template["title"]?>
                             </option>
@@ -135,34 +76,35 @@ print $page->top();
                     </select>
                 <?php endif?>
             <?php endif?>
-            <?php if ($contents): ?>
-                <?php if ($preview): ?>
+            <?php if ($data->contents): ?>
+                <?php if ($data->preview): ?>
                     <h5>Feedback Preview</h5>
                     <pre class="feedback">
-                        <?=$contents?>
+                        <?=$data->contents?>
                     </pre>
                     <h5>Comments Summary</h5>
                     <ul class="feedback-comments" >
-                        <?php foreach ($selectedComments as $selectedCommentKey): ?>
+                        <?php foreach ($data->selectedComments as $selectedCommentKey): ?>
                             <li>
-                                <?=$comments[$selectedCommentKey]?>
+                                <?=$data->comments[$selectedCommentKey]?>
                             </li>
                         <?php endforeach?>
                     </ul>
-                    <input type="submit" name="save" value="Save">
+                    <!-- the save button has been disabled as saving has not been implmented -->
+                    <input type="submit" name="save" value="Save" disabled>
                 <?php else: ?>
-                    <textarea rows="10" cols="90">
-                        <?=$contents?>
+                    <textarea rows="10" cols="90" name="contents">
+                        <?=$data->contents?>
                     </textarea>
                     <h5>Comments</h5>
-                    <?php foreach ($comments as $key => $comment): ?>
+                    <?php foreach ($data->comments as $key => $comment): ?>
                         <div>
                             <input
                                 type="checkbox"
                                 value="<?=$key?>"
                                 id="selectedComments<?=$key?>"
                                 name="selectedComments[]"
-                                <?=commentChecked($key, $selectedComments)?>
+                                <?=commentChecked($key, $data->selectedComments)?>
                             >
                             <label for="selectedComments[]"><?=$comment?></label>
                         </div>

@@ -29,10 +29,6 @@ class RoleFormHandler
     {
         $data = new RoleFormData();
 
-        // GET variables
-        $data->id = getQueryParameter('id');
-        $data->mode = getMode($data->id);
-
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
             if ($data->mode == 'edit') {
                 $role = $this->dbRoles->getRole($data->id);
@@ -79,15 +75,12 @@ class RoleFormHandler
     {
         $data = new RoleDeletionData();
 
-        $data->id = $_GET['id'];
-        $data->confirmed = $_GET['confirmed'];
-
-        $role = $dbRoles->getRole($id);
+        $role = $this->dbRoles->getRole($data->id);
         $data->title = $role["title"];
 
         if ($data->confirmed) {
             try {
-                $result = $dbRoles->deleteRole($id);
+                $result = $this->dbRoles->deleteRole($data->id);
                 $affectedRows = $result->getAffectedRows();
                 $data->deleted = true;
                 if ($affectedRows != 1) {

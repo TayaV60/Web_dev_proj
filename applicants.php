@@ -14,9 +14,9 @@ function getApplicantRoleTitles($coApplicants, $allRoles, $id)
 
 $page = new Page("Applicants", "Applicants");
 
-$coApplicants = new ApplicantsCoordinator();
-$applicants = $coApplicants->listApplicants();
-$allRoles = $coApplicants->listRoles();
+$handler = new ApplicantFormHandler();
+$applicants = $handler->listApplicants();
+$allRoles = $handler->listRoles();
 
 print $page->top();
 
@@ -49,7 +49,7 @@ print $page->top();
                     <?=$value["phone"]?>
                 </td>
                 <td>
-                    <?=getApplicantRoleTitles($coApplicants, $allRoles, $value["id"])?>
+                    <?=getApplicantRoleTitles($handler, $allRoles, $value["id"])?>
                 </td>
                 <td>
                     <a href="create_or_edit_applicant.php?id=<?=$value["id"]?>" value="Edit <?=$value["name"]?>" >

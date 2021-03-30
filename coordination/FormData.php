@@ -1,5 +1,7 @@
 <?php
 
+require_once 'coordination/Supporting_functions.php';
+
 abstract class FormData
 {
     // The id of the object within the database
@@ -16,6 +18,12 @@ abstract class FormData
 
     // Whether the save encountered an error
     public $errorSaving = null;
+
+    public function __construct()
+    {
+        $this->id = getQueryParameter('id');
+        $this->mode = getMode($this->id);
+    }
 }
 
 abstract class DeletionData
@@ -31,4 +39,10 @@ abstract class DeletionData
 
     // Was there an error deleting
     public $deletionError = null;
+
+    public function __construct()
+    {
+        $this->id = getQueryParameter('id');
+        $this->confirmed = getQueryParameter('confirmed');
+    }
 }

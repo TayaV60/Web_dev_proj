@@ -49,10 +49,6 @@ Best wishes,
     {
         $data = new TemplateFormData();
 
-        // GET variables
-        $data->id = getQueryParameter('id');
-        $data->mode = getMode($data->id);
-
         // if user has not posted yet, setup necessary default values
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
             if ($data->mode == 'edit') {
@@ -129,9 +125,6 @@ Best wishes,
     public function handleDelete()
     {
         $data = new TemplateDeletionData();
-
-        $data->id = $_GET['id'];
-        $data->confirmed = getQueryParameter('confirmed');
 
         // The template to be deleted
         $template = $this->dbTemplates->getTemplate($data->id);

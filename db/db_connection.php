@@ -1,6 +1,9 @@
 <?php
 
-class DB
+/*
+ * A base class that constructs a PDO connection and provides a method for executing SQL queries.
+ */
+abstract class DB
 {
     private $conn;
 
@@ -27,12 +30,15 @@ class DB
     }
 
     /*
-     * Runs a query. $query is always required. $types and $params can be supplied to bind query parameters.
+     * Runs a query. The $query string is always required. A $params associative array
+     * can be supplied to bind query parameters. Exceptions will be thrown if the
+     * statement cannot be prepared, params cannot be bound, or the statement cannot
+     * be executed. It is up to the caller (usually a handler class), to catch these
+     * exceptions and deal with them appropriately.
      */
     protected function query($query, $params = [])
     {
-        // error_log("Query is '$query'");
-        // error_log(print_r($params, true));
+        // prepare a statement with the $query
         $stmt = $this->conn->prepare($query);
         if (false === $stmt) {
             error_log('PDO prepare() failed: ');
@@ -40,6 +46,7 @@ class DB
             throw new Exception('Prepare failed');
         }
 
+        // bind params
         if ($params) {
             foreach ($params as $key => $value) {
                 $bind = $stmt->bindValue($key, $value);
@@ -51,6 +58,7 @@ class DB
             }
         }
 
+        // execute statement
         $exec = $stmt->execute();
         if (false === $exec) {
             error_log('PDO execute() failed: ');
@@ -58,11 +66,10 @@ class DB
             throw new Exception("Execution failed $stmt->error");
         }
 
+        // extract statement results into a DBStatementResults object
         $dbResult = new DBStatementResults($stmt);
 
-        // error_log(print_r($dbResult->getAffectedRows(), true));
-        // error_log(print_r($dbResult->getResult(), true));
-
+        // once results extracted, close the statement
         $stmt = null;
 
         return $dbResult;

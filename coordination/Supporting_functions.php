@@ -1,15 +1,5 @@
 <?php
 
-// returns 'edit' if the id is not null, othewrise returns 'create'
-function getMode($id)
-{
-    $mode = 'create';
-    if ($id != null) {
-        $mode = 'edit';
-    }
-    return $mode;
-}
-
 //retrieves a $_GET parameter, returning null and not causing a warning if not present
 function getQueryParameter($key)
 {

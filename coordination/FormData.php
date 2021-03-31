@@ -22,7 +22,17 @@ abstract class FormData
     public function __construct()
     {
         $this->id = getQueryParameter('id');
-        $this->mode = getMode($this->id);
+        $this->mode = $this->getMode($this->id);
+    }
+
+    // returns 'edit' if the id is not null, othewrise returns 'create'
+    private function getMode($id)
+    {
+        $mode = 'create';
+        if ($id != null) {
+            $mode = 'edit';
+        }
+        return $mode;
     }
 }
 

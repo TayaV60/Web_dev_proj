@@ -6,7 +6,7 @@ require_once 'page_elements/Page.php';
 $handler = new RoleFormHandler();
 $data = $handler->handleCreateOrEdit();
 
-$page = new Page($handler->pageTitle, "Roles");
+$page = new Page($data->pageTitle, "Roles");
 print $page->top();
 
 ?>

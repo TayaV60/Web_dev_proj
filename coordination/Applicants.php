@@ -29,6 +29,12 @@ class ApplicantDeletionData extends DeletionData
     public $applicantRoleTitles = [];
 }
 
+class ApplicantListData
+{
+    public $applicants;
+    public $allRoles;
+}
+
 function emailValidation($email)
 {
     if (!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $email)) {
@@ -61,6 +67,19 @@ class ApplicantFormHandler
         $this->dbApplicants = new DBApplicants();
         $this->dbRoles = new DBRoles();
         $this->dbApplicantsRoles = new DBApplicantsRoles();
+    }
+
+    public function handleList()
+    {
+        $data = new ApplicantListData();
+        $allApplicants = $this->dbApplicants->listApplicants();
+        $data->applicants = [];
+        $data->allRoles = $this->dbRoles->listRoles();
+        foreach ($allApplicants as $applicant) {
+            $applicant["titles"] = $this->getApplicantRoleTitles($data->allRoles, $applicant["id"]);
+            $data->applicants[] = $applicant;
+        }
+        return $data;
     }
 
     public function handleCreateOrEdit()
@@ -149,7 +168,7 @@ class ApplicantFormHandler
         $data->phone = $applicant["phone"];
 
         $applicantRoles = $this->getRolesForApplicant($data->id);
-        $roles = $this->listRoles();
+        $roles = $this->dbRoles->listRoles();
 
         $data->applicantRoleTitles = [];
         foreach ($roles as $role) {
@@ -176,19 +195,7 @@ class ApplicantFormHandler
         return $data;
     }
 
-    public function listApplicants()
-    {
-        $applicants = $this->dbApplicants->listApplicants();
-        return $applicants;
-    }
-
-    public function listRoles()
-    {
-        $roles = $this->dbRoles->listRoles();
-        return $roles;
-    }
-
-    public function getRolesForApplicant($applicantId)
+    private function getRolesForApplicant($applicantId)
     {
         $dbResult = $this->dbApplicantsRoles->getRoleIdsForApplicant($applicantId);
         $result = $dbResult->getResult();
@@ -197,17 +204,6 @@ class ApplicantFormHandler
             $ids[] = $row["role_id"];
         }
         return $ids;
-    }
-
-    public function getApplicant($id)
-    {
-        $applicant = $this->dbApplicants->getApplicant($id);
-        return $applicant;
-    }
-
-    public function getRole($id)
-    {
-        return $this->dbRoles->getRole($id);
     }
 
     private function createApplicant($name, $email, $phone, $roles)
@@ -234,6 +230,16 @@ class ApplicantFormHandler
     {
         $this->dbApplicantsRoles->clearApplicantRoles($applicantId);
         return $this->dbApplicants->deleteApplicant($applicantId);
+    }
+
+    private function getApplicantRoleTitles($allRoles, $id)
+    {
+        $applicantRoleIds = $this->getRolesForApplicant($id);
+        $titles = [];
+        foreach ($applicantRoleIds as $applicantRoleId) {
+            $titles[] = getRoleTitleFromId($applicantRoleId, $allRoles);
+        }
+        return implode(", ", $titles);
     }
 }
 

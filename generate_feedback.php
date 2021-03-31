@@ -1,5 +1,7 @@
 <?php
+
 require_once 'page_elements/Page.php';
+require_once 'coordination/Applicants.php';
 require_once 'coordination/Feedback.php';
 require_once 'coordination/Supporting_functions.php';
 
@@ -53,9 +55,9 @@ print $page->top();
                 <?php else: ?>
                     <select name="roleId" onchange="if (this.selectedIndex) this.form.submit()">
                         <option value='-1'>Select role</option>
-                        <?php foreach ($data->applicantRoles as $roleId): ?>
-                            <option value=<?=$roleId?> >
-                                <?=getRoleTitleFromId($roleId, $data->allRoles)?>
+                        <?php foreach ($data->applicantRoles as $role): ?>
+                            <option value=<?=$role["role_id"]?> >
+                                <?=getRoleTitleFromId($role["role_id"], $data->allRoles)?>
                             </option>
                         <?php endforeach?>
                     </select>

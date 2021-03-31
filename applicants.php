@@ -1,22 +1,12 @@
 <?php
+
 require_once 'coordination/Applicants.php';
 require_once 'page_elements/Page.php';
-
-function getApplicantRoleTitles($coApplicants, $allRoles, $id)
-{
-    $applicantRoleIds = $coApplicants->getRolesForApplicant($id);
-    $titles = [];
-    foreach ($applicantRoleIds as $applicantRoleId) {
-        $titles[] = getRoleTitleFromId($applicantRoleId, $allRoles);
-    }
-    return implode(", ", $titles);
-}
 
 $page = new Page("Applicants", "Applicants");
 
 $handler = new ApplicantFormHandler();
-$applicants = $handler->listApplicants();
-$allRoles = $handler->listRoles();
+$data = $handler->handleList();
 
 print $page->top();
 
@@ -37,7 +27,7 @@ print $page->top();
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($applicants as $value): ?>
+        <?php foreach ($data->applicants as $value): ?>
             <tr>
                 <td>
                     <?=$value["name"]?>
@@ -49,7 +39,7 @@ print $page->top();
                     <?=$value["phone"]?>
                 </td>
                 <td>
-                    <?=getApplicantRoleTitles($handler, $allRoles, $value["id"])?>
+                    <?=$value["titles"]?>
                 </td>
                 <td>
                     <a href="create_or_edit_applicant.php?id=<?=$value["id"]?>" value="Edit <?=$value["name"]?>" >

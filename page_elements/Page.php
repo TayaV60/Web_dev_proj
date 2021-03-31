@@ -1,7 +1,6 @@
 <?php
+
 require_once 'db/Users.php';
-require_once 'sidemenu.php';
-require_once 'topmenu.php';
 
 //start the session
 session_start();
@@ -34,8 +33,8 @@ class Page
             ";
         }
 
-        $top_menu = topMenu($this->tab_title);
-        $side_menu = sideMenu($this->tab_title);
+        $top_menu = $this->topMenu($this->tab_title);
+        $side_menu = $this->sideMenu($this->tab_title);
         $to_return = "
             <html>
             <head>
@@ -72,4 +71,44 @@ class Page
         $isLoggedIn = array_key_exists('username', $_SESSION);
         return $isLoggedIn;
     }
+
+    private function sideMenu($title)
+    {
+        $tabs = [
+            "Generate feedback" => "generate_feedback",
+            "Send feedback" => "send_feedback",
+        ];
+        $menu = "<div class='vertical'>";
+        foreach ($tabs as $tab_title => $tab_file) {
+            if ($tab_title == $title) {
+                $linkClass = "current_tab";
+            } else {
+                $linkClass = "";
+            }
+            $menu .= "<a class='$linkClass' href='$tab_file.php'>$tab_title</a>";
+        }
+        $menu .= "</div>";
+        return $menu;
+    }
+
+    private function topMenu($title)
+    {
+        $tabs = [
+            "Templates" => "templates",
+            "Applicants" => "applicants",
+            "Roles" => "roles",
+        ];
+        $menu = "<div class='horizontal'>";
+        foreach ($tabs as $tab_title => $tab_file) {
+            if ($tab_title == $title) {
+                $linkClass = "current_tab";
+            } else {
+                $linkClass = "";
+            }
+            $menu .= "<a class='$linkClass' href='$tab_file.php'>$tab_title</a>";
+        }
+        $menu .= "</div>";
+        return $menu;
+    }
+
 }

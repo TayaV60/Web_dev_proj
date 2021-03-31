@@ -1,11 +1,11 @@
 <?php
-require_once 'db/Templates.php';
+require_once 'coordination/Templates.php';
 require_once 'page_elements/Page.php';
 
 $page = new Page("List existing templates", "Templates");
 
-$dbTemplates = new DBTemplates();
-$templates = $dbTemplates->listTemplates();
+$handler = new TemplateFormHandler();
+$data = $handler->handleList();
 
 print $page->top();
 
@@ -23,7 +23,7 @@ print $page->top();
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($templates as $template): ?>
+        <?php foreach ($data->templates as $template): ?>
             <tr>
                 <td>
                     <?=$template["title"]?>

@@ -1,86 +1,22 @@
 <?php
-require_once 'db/Users.php';
+require_once 'coordination/Registration.php';
 require_once 'page_elements/Page.php';
-
-$dbUsers = new DBUsers();
 
 $page = new Page("Registration", "", false);
 
-$username = null;
-$password = null;
-$name_surname = null;
-
-$valid = false;
-$saved = false;
-$errorSaving = null;
-$usernameValidationError = null;
-$passwordValidationError = null;
-$namesurnameValidationError = null;
-
-function usernameValidation($username)
-{
-    if (!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $username)) {
-        return false;
-    }
-    return true;
-}
-
-function passwordValidation($password)
-{
-    if (!preg_match('/[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/', $password)) {
-        return false;
-    }
-    return true;
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $name_surname = $_POST['name_surname'];
-
-    if (usernameValidation($username) == false) {
-        $usernameValidationError = "The username format is incorrect";
-    }
-
-    if (passwordValidation($password) == false) {
-        $passwordValidationError = "The password is weak";
-    }
-
-    if (strlen($name_surname) < 1) {
-        $namesurnameValidationError = "Please enter your name and surname";
-    }
-
-    if (!$usernameValidationError && !$passwordValidationError && !$namesurnameValidationError) {
-        $valid = true;
-    }
-
-    if ($valid && isset($_POST['save'])) {
-        try {
-            $dbUsers->createUser($username, $password, $name_surname);
-            $saved = true;
-        } catch (Exception $e) {
-            $message = $e->getMessage();
-            error_log($e);
-            if ($e->errorInfo[1] == 1062) {
-                // duplicate entry
-                $errorSaving = "User already exists.";
-            } else {
-                $errorSaving = "Could not create user.";
-            }
-        }
-    }
-}
+$handler = new RegistrationFormHandler();
+$data = $handler->handleRegistration();
 
 print $page->top();
 
 ?>
 
-<?php if ($saved): ?>
-    User '<?=$name_surname?>' created successfully. You can now <a href="login.php">login</a>.
+<?php if ($data->saved): ?>
+    User '<?=$data->name_surname?>' created successfully. You can now <a href="login.php">login</a>.
 
-<?php elseif ($errorSaving): ?>
+<?php elseif ($data->errorSaving): ?>
 
-    <?=$errorSaving?>
+    <?=$data->errorSaving?>
 
 <?php else: ?>
 
@@ -97,9 +33,9 @@ print $page->top();
             type="text"
             name="username"
             placeholder="Enter the username"
-            value="<?=$username?>"
+            value="<?=$data->username?>"
         >
-        <?=$usernameValidationError?>
+        <?=$data->usernameValidationError?>
 
         <br>
         <br>
@@ -109,9 +45,9 @@ print $page->top();
             type="password"
             name="password"
             placeholder="Enter the password"
-            value="<?=$password?>"
+            value="<?=$data->password?>"
         >
-        <?=$passwordValidationError?>
+        <?=$data->passwordValidationError?>
 
         <br>
         <br>
@@ -121,13 +57,13 @@ print $page->top();
             type="text"
             name="name_surname"
             placeholder="Enter the name and the surname of the user"
-            value="<?=$name_surname?>"
+            value="<?=$data->name_surname?>"
         >
-        <?=$namesurnameValidationError?>
+        <?=$data->namesurnameValidationError?>
 
         <br>
         <br>
-        <?php if ($valid): ?>
+        <?php if ($data->valid): ?>
             <input type="submit" name="save" value="Save">
         <?php else: ?>
             <input type="submit" name="check" value="Check">

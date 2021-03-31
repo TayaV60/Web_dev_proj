@@ -18,11 +18,23 @@ class RoleDeletionData extends DeletionData
     public $title = null;
 }
 
+class RoleListData
+{
+    public $roles;
+}
+
 class RoleFormHandler
 {
     public function __construct()
     {
         $this->dbRoles = new DBRoles();
+    }
+
+    public function handleList()
+    {
+        $data = new RoleListData();
+        $data->roles = $this->dbRoles->listRoles();
+        return $data;
     }
 
     public function handleCreateOrEdit()

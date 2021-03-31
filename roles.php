@@ -1,11 +1,11 @@
 <?php
-require_once 'db/Roles.php';
+require_once 'coordination/Roles.php';
 require_once 'page_elements/Page.php';
 
 $page = new Page("Roles", "Roles");
 
-$dbRoles = new DBRoles();
-$roles = $dbRoles->listRoles();
+$handler = new RoleFormHandler();
+$data = $handler->handleList();
 
 print $page->top();
 
@@ -23,7 +23,7 @@ print $page->top();
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($roles as $role): ?>
+        <?php foreach ($data->roles as $role): ?>
             <tr>
                 <td>
                     <?=$role["title"]?>

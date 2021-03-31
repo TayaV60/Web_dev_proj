@@ -24,6 +24,11 @@ class TemplateDeletionData extends DeletionData
     public $comments = null;
 }
 
+class TemplateListData
+{
+    public $templates;
+}
+
 class TemplateFormHandler
 {
     // A default template to be used if in 'create' mode.
@@ -43,6 +48,13 @@ Best wishes,
     public function __construct()
     {
         $this->dbTemplates = new DBTemplates();
+    }
+
+    public function handleList()
+    {
+        $data = new TemplateListData();
+        $data->templates = $this->dbTemplates->listTemplates();
+        return $data;
     }
 
     public function handleCreateOrEdit()

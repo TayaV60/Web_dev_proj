@@ -29,11 +29,11 @@ class Page
             $user = $this->dbUsers->getUserByUsername($_SESSION['username']);
             $name = $user["name_surname"];
             $logout = "
-                <span>Welcome, $name. <a class='links' href='logout.php'>Logout</a><span>
+                <a class='logoutlink' href='logout.php'>Logout, $name. Logout</a>
             ";
         }
 
-        $top_menu = $this->topMenu($this->tab_title);
+        $top_menu = $this->topMenu($this->tab_title, $logout);
         $side_menu = $this->sideMenu($this->tab_title);
         $to_return = "
             <html>
@@ -48,7 +48,7 @@ class Page
                     <h1><a href='index.php' class='titlelinks' >HappyTech</a></h1>
                     <h3>HR tool for writing application feedback</h3>
                 </div>
-                $top_menu $logout
+                $top_menu
                 <div class='container'>
                     $side_menu
                     <!-- the contents field -->
@@ -91,7 +91,7 @@ class Page
         return $menu;
     }
 
-    private function topMenu($title)
+    private function topMenu($title, $logout)
     {
         $tabs = [
             "Templates" => "templates",
@@ -100,13 +100,13 @@ class Page
         ];
         $menu = "<div class='horizontal'>";
         foreach ($tabs as $tab_title => $tab_file) {
+            $linkClass = "page_link";
             if ($tab_title == $title) {
-                $linkClass = "current_tab";
-            } else {
-                $linkClass = "";
+                $linkClass .= " current_tab";
             }
             $menu .= "<a class='$linkClass' href='$tab_file.php'>$tab_title</a>";
         }
+        $menu .= $logout;
         $menu .= "</div>";
         return $menu;
     }

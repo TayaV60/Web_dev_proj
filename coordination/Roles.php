@@ -49,7 +49,7 @@ class RoleFormHandler
         } else if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $data->title = $_POST['title'];
             if (strlen($data->title) < 4) {
-                $data->titleValidationError = "Name is too short";
+                $data->titleValidationError = "Title is too short";
             }
             if (!$data->titleValidationError) {
                 $data->valid = true;

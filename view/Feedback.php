@@ -31,8 +31,9 @@ function generateFeedbackView($data)
 
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']); ?>" method="post">
             <?php if ($data->applicant): ?>
-                <h4 class="feedback" >Selected applicant: <?=$data->applicant["name"]?></h4>
+                <div class="feedback" >Selected applicant: <?=$data->applicant["name"]?></div>
                 <input type="hidden" name="applicantId" value="<?=$data->applicant["id"]?>">
+                <br>
             <?php else: ?>
             <select name="applicantId" onchange="if (this.selectedIndex) this.form.submit()" >
                 <option value='-1'>Select applicant</option>
@@ -46,8 +47,9 @@ function generateFeedbackView($data)
 
             <?php if ($data->applicantRoles): ?>
                 <?php if ($data->role): ?>
-                    <h4 class="feedback" >Selected role: <?=$data->role["title"]?></h4>
+                    <div class="feedback" >Selected role: <?=$data->role["title"]?></div>
                     <input type="hidden" name="roleId" value="<?=$data->role["id"]?>">
+                    <br>
                 <?php else: ?>
                     <select name="roleId" onchange="if (this.selectedIndex) this.form.submit()">
                         <option value='-1'>Select role</option>
@@ -61,8 +63,9 @@ function generateFeedbackView($data)
             <?php endif?>
             <?php if ($data->role && $data->applicant): ?>
                 <?php if ($data->template): ?>
-                    <h4 class="feedback" >Selected template: <?=$data->template["title"]?></h4>
+                    <div class="feedback" >Selected template: <?=$data->template["title"]?></div>
                     <input type="hidden" name="templateId" value="<?=$data->template["id"]?>">
+                    <br>
                 <?php else: ?>
                     <select name="templateId" onchange="if (this.selectedIndex) this.form.submit()">
                         <option value='-1'>Select template</option>
@@ -76,11 +79,11 @@ function generateFeedbackView($data)
             <?php endif?>
             <?php if ($data->contents): ?>
                 <?php if ($data->preview): ?>
-                    <h5>Feedback Preview</h5>
+                    <h4>Feedback Preview</h4>
                     <pre class="feedback">
                         <?=$data->contents?>
                     </pre>
-                    <h5>Comments Summary</h5>
+                    <h4>Comments Summary</h4>
                     <ul class="feedback-comments" >
                         <?php foreach ($data->selectedComments as $selectedCommentKey): ?>
                             <li>
@@ -107,6 +110,7 @@ function generateFeedbackView($data)
                             <label for="selectedComments[]"><?=$comment?></label>
                         </div>
                     <?php endforeach?>
+                    <br>
                     <input type="submit" name="preview" value="Preview">
                 <?php endif?>
             <?php endif?>

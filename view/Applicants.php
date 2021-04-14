@@ -7,9 +7,7 @@ function listView($data)
 {
     ?>
 
-<a class='links' href="create_or_edit_applicant.php">Create new applicant</a>
-<br>
-<br>
+<h3><a class='links' href="create_or_edit_applicant.php">Create a new applicant</a></h3>
 <table>
 <thead>
         <tr>
@@ -70,19 +68,21 @@ function deleteView($data)
     <?php else: ?>
 
         <div class="applicant_form">
-            <h3>Are you sure you want to delete this applicant?</h3>
-            <h4>Applicant name</h4>
-            <?=$data->name?>
-            <h4>Email address</h4>
-            <?=$data->email?>
-            <h4>Phone number</h4>
-            <?=$data->phone?>
-            <h4>Roles applied for</h4>
-            <?=implode(", ", $data->applicantRoleTitles)?>
-
-            <br>
-            <a href="applicants.php">Cancel</a>
-            <a href="delete_applicant.php?id=<?=$data->id?>&confirmed=true">Delete</a>
+            <div class="areyousure" >
+                Are you sure you want to delete this applicant?
+                <a href="applicants.php">Cancel</a>
+                <a href="delete_applicant.php?id=<?=$data->id?>&confirmed=true">Delete</a>
+            </div>
+            <div class="todelete">
+                <h4>Applicant name</h4>
+                <?=$data->name?>
+                <h4>Email address</h4>
+                <?=$data->email?>
+                <h4>Phone number</h4>
+                <?=$data->phone?>
+                <h4>Roles applied for</h4>
+                <?=implode(", ", $data->applicantRoleTitles)?>
+            </div>
         </div>
 
     <?php endif?>
@@ -96,15 +96,15 @@ function createOrEditView($data)
     ?>
 
 <?php if ($data->saved): ?>
-    Applicant '<?=$data->name?>' saved successfully.
+    <h3>Applicant '<?=$data->name?>' saved successfully.</h3>
 
-    <h3>Email</h3>
+    <h4>Email</h4>
     <div><?=$data->email?></div>
 
-    <h3>Phone</h3>
+    <h4>Phone</h4>
     <div><?=$data->phone?></div>
 
-    <h3>Roles</h3>
+    <h4>Roles</h4>
     <ul>
         <?php foreach ($data->applicantRoles as $roleId): ?>
             <li><?=getRoleTitleFromId($roleId, $data->allRoles)?></li>
@@ -112,7 +112,9 @@ function createOrEditView($data)
     </ul>
 <?php elseif ($data->errorSaving): ?>
 
-    <?=$data->errorSaving?>
+    <div class="errorsaving">
+        <?=$data->errorSaving?>
+    </div>
 
 <?php else: ?>
 
@@ -125,10 +127,13 @@ function createOrEditView($data)
             <h3>Edit existing applicant</h3>
         <?php endif?>
 
+        <h4><a href="applicants.php">Back to applicant listing</a></h4>
+
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']); ?>" method="post">
 
 
             <label for="name">Applicant name</label>
+            <br>
             <br>
             <input
                 type="text"
@@ -136,10 +141,13 @@ function createOrEditView($data)
                 placeholder="Enter the name of new applicant"
                 value="<?=$data->name?>"
             >
-            <?=$data->nameValidationError?>
+            <div class="invalid">
+                <?=$data->nameValidationError?>
+            </div>
             <br>
             <br>
             <label for="email">Applicant's email address</label>
+            <br>
             <br>
             <input
                 type="text"
@@ -147,11 +155,14 @@ function createOrEditView($data)
                 placeholder="Enter the applicant's email"
                 value="<?=$data->email?>"
             >
-            <?=$data->emailValidationError?>
+            <div class="invalid">
+                <?=$data->emailValidationError?>
+            </div>
 
             <br>
             <br>
             <label for="phone">Applicant's phone number</label>
+            <br>
             <br>
             <input
                 type="text"
@@ -159,10 +170,13 @@ function createOrEditView($data)
                 placeholder="Enter the applicant's phone number"
                 value="<?=$data->phone?>"
             >
-            <?=$data->phoneValidationError?>
+            <div class="invalid">
+                <?=$data->phoneValidationError?>
+            </div>
             <br>
             <br>
             <label for="roles">Roles applied for</label>
+            <br>
             <br>
             <select name="applicantRoles[]" multiple>
                 <?php foreach ($data->allRoles as $role): ?>
@@ -171,7 +185,9 @@ function createOrEditView($data)
                     </option>
                 <?php endforeach?>
             </select>
-            <?=$data->rolesValidationError?>
+            <div class="invalid">
+                <?=$data->rolesValidationError?>
+            </div>
 
             <br>
             <br>

@@ -1,11 +1,12 @@
 :root {
-  --link-color: #56595a;
+  --standard-color: #56595a;
 }
 
 body {
   font-family: Arial, Helvetica, sans-serif;
   background-color:whitesmoke;
   margin: 0px;
+  color: var(--standard-color);
 }
 
 .header {
@@ -16,27 +17,25 @@ body {
   margin-bottom: 40px;
 }
 
-h1 {
-  color: #56595a;
+h1, h2, h3, h4, h5, h6 {
+  color:  var(--standard-color);
+}
+
+.header h1 {
   font-weight: 300;
   font-size: 25 px;
   text-align: center;
 }
 
-h3 {
-  color: #56595a;
+.header h3 {
   font-weight: 50;
   font-size: 13px;
   text-align: center;
 }
 
-h3.feedback {
+.feedback {
   font-size: 14px;
-  text-align: left;
-}
-
-h4.feedback {
-  margin: 5px;
+  margin-left: 5px;
 }
 
 pre.feedback {
@@ -79,7 +78,7 @@ pre.feedback {
 
 .horizontal a {
   background-color: whitesmoke;
-  padding: 10px 0px;
+  padding: 10px;
   cursor: pointer;
   text-decoration: none;
   text-align: center;
@@ -113,11 +112,11 @@ a.current_tab {
   background-color: white;
   margin: auto;
   min-height: 250px;
-  width: 90%;
+  width: 100%;
   border: 1px solid 221, 218, 218;
-  padding: 5 px;
-  font-size: 13px;
-  color: rgb(37, 37, 39);
+  padding: 5px;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 table, th, td {
@@ -127,7 +126,6 @@ table, th, td {
 }
 
 th, td {
-  color: #56595a;
   padding: 10px;
 }
 
@@ -150,19 +148,37 @@ th, td {
   list-style: none;
 }
 
-a.titlelinks {
-  color: var(--link-color);
+.areyousure {
+  margin-top: 10px;
+  color: purple;
+  margin-left: 10px;
 }
 
-a.links {
-  font-size: 15px;
-  color: var(--link-color);
+.todelete {
+  border: 1px dashed grey;
+  padding: 10px;
+  margin: 10px;
 }
 
-a.links:hover, a.titlelinks:hover {
-  color: black;
+.invalid {
+  color: red;
 }
 
-.welcome {
-  color: var(--link-color);
+.errorsaving {
+  margin-top: 10px;
+  color: red;
+  margin-left: 10px;
+}
+
+a, a:visited {
+  color: var(--standard-color);
+}
+
+a:hover {
+  color: black; 
+}
+
+a:not([href]) {
+  text-decoration: underline;
+  cursor: hand;
 }

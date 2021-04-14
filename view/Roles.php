@@ -7,9 +7,7 @@ function listView($data)
 {
     ?>
 
-<a class='links' href="create_or_edit_role.php">Create new role</a>
-<br>
-<br>
+<h3><a class='links' href="create_or_edit_role.php">Create a new role</a></h3>
 <table>
     <thead>
         <tr>
@@ -58,13 +56,15 @@ function deleteView($data)
     <?php else: ?>
 
         <div class="role_form">
-            <h3>Are you sure you want to delete this role?</h3>
-            <h4>Role title</h4>
-            <?=$data->title?>
-            <br>
-            <br>
-            <a href="roles.php">Cancel</a>
-            <a href="delete_role.php?id=<?=$data->id?>&confirmed=true">Delete</a>
+            <div class="areyousure">
+                Are you sure you want to delete this role?
+                <a href="roles.php">Cancel</a>
+                <a href="delete_role.php?id=<?=$data->id?>&confirmed=true">Delete</a>
+            </div>
+            <div class="todelete">
+                <h4>Role title</h4>
+                <?=$data->title?>
+            </div>
         </div>
 
     <?php endif?>
@@ -78,14 +78,16 @@ function createOrEditView($data)
     ?>
 
 <?php if ($data->saved): ?>
-    Role '<?=$data->title?>' saved successfully.
+    <h3>Role '<?=$data->title?>' saved successfully.</h3>
 
-    <h3>Title</h3>
+    <h4>Title</h4>
     <div><?=$data->title?></div>
 
 <?php elseif ($data->errorSaving): ?>
 
-    <?=$data->errorSaving?>
+    <div class="errorsaving">
+        <?=$data->errorSaving?>
+    </div>
 
 <?php else: ?>
 
@@ -95,12 +97,15 @@ function createOrEditView($data)
             <?php if ($data->mode == 'create'): ?>
                 <h3>Create a new role</h3>
             <?php else: ?>
-                <h3>Edit existing applicant</h3>
+                <h3>Edit existing role</h3>
             <?php endif?>
+
+            <h4><a href="roles.php">Back to role listing</a></h4>
 
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']); ?>" method="post">
 
                 <label for="title">Role title</label>
+                <br>
                 <br>
                 <input
                     type="text"
@@ -109,7 +114,9 @@ function createOrEditView($data)
                     value="<?=$data->title?>"
                 >
 
-                <?=$data->titleValidationError?>
+                <div class="invalid">
+                    <?=$data->titleValidationError?>
+                </div>
 
                 <br>
                 <br>

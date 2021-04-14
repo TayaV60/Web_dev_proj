@@ -19,21 +19,24 @@ function deleteView($data)
     <?php else: ?>
 
         <div class="template_form">
-            <h3>Are you sure you want to delete this template?</h3>
-            <h4>Template name</h4>
-            <?=$data->title?>"
-            <h4>Template contents</h4>
-            <pre><?=$data->contents?></pre>
-            <h4>Template Comments</h4>
-            <ul>
-            <?php foreach ($data->comments as $comment): ?>
-                <li>
-                    <input type='checkbox' disabled checked><?=$comment?>
-                </li>
-            <?php endforeach?>
-            </ul>
-            <a href="templates.php">Cancel</a>
-            <a href="delete_template.php?id=<?=$data->id?>&confirmed=true">Delete</a>
+            <div class="areyousure">Are you sure you want to delete this template?
+                <a href="templates.php">Cancel</a>
+                <a href="delete_template.php?id=<?=$data->id?>&confirmed=true">Delete</a>
+            </div>
+            <div class="todelete">
+                <h4>Template name</h4>
+                <?=$data->title?>"
+                <h4>Template contents</h4>
+                <pre><?=$data->contents?></pre>
+                <h4>Template Comments</h4>
+                <ul>
+                <?php foreach ($data->comments as $comment): ?>
+                    <li>
+                        <input type='checkbox' disabled checked><?=$comment?>
+                    </li>
+                <?php endforeach?>
+                </ul>
+            </div>
         </div>
 
     <?php endif?>
@@ -47,12 +50,12 @@ function createOrEditView($data)
     ?>
 
 <?php if ($data->saved): ?>
-    Template '<?=$data->title?>' saved successfully.
+    <h3>Template '<?=$data->title?>' saved successfully.</h3>
 
-    <h3>Contents</h3>
+    <h4>Contents</h4>
     <pre><?=$data->contents?></pre>
 
-    <h3>Comments</h3>
+    <h4>Comments</h4>
     <?php foreach ($data->comments as $comment): ?>
         <br>
         <input type='checkbox' disabled checked> <?=$comment?>
@@ -60,7 +63,9 @@ function createOrEditView($data)
 
 <?php elseif ($data->errorSaving): ?>
 
-    <?=$data->errorSaving?>
+    <div class="errorsaving">
+        <?=$data->errorSaving?>
+    </div>
 
 <?php else: ?>
 
@@ -73,9 +78,12 @@ function createOrEditView($data)
                 <h3>Edit existing template</h3>
             <?php endif?>
 
+            <h4><a href="templates.php">Back to template listing</a></h4>
+
             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']); ?>" method="post">
 
                 <label for="title">Template name</label>
+                <br>
                 <br>
                 <input
                     type="text"
@@ -83,17 +91,23 @@ function createOrEditView($data)
                     placeholder="Enter the name of your template"
                     value="<?=$data->title?>"
                 >
-                <?=$data->titleValidationError?>
+                <div class="invalid">
+                    <?=$data->titleValidationError?>
+                </div>
+                <br>
                 <br>
 
                 <label for="contents">Template contents</label>
                 <br>
+                <br>
                 <textarea rows="10" cols="90" name="contents"><?=$data->contents?></textarea>
-                <?=$data->contentsValidationError?>
+                <div class="invalid">
+                    <?=$data->contentsValidationError?>
+                </div>
 
                 <div class="comments">
-                    <h4>Template Comments</h4>
-                    <a onClick="addComment()">Add comment</a>
+                    <br>
+                    <a onClick="addComment()">Add template comment</a>
                     <ul id="form-comments">
                     <?php foreach ($data->comments as $comment): ?>
                         <li>
@@ -102,7 +116,9 @@ function createOrEditView($data)
                         </li>
                     <?php endforeach?>
                     </ul>
-                    <?=$data->commentsValidationError?>
+                    <div class="invalid">
+                        <?=$data->commentsValidationError?>
+                    </div>
                 </div>
 
                 <br>
@@ -112,8 +128,6 @@ function createOrEditView($data)
                 <?php else: ?>
                     <input type="submit" name="check" value="Check">
                 <?php endif?>
-
-                <a href="templates.php">Cancel</a>
             </form>
         </div>
 
@@ -167,9 +181,7 @@ function listView($data)
 {
     ?>
 
-<a class='links' href="create_or_edit_template.php">Create new template</a>
-<br>
-<br>
+<h3><a class='links' href="create_or_edit_template.php">Create a new template</a></h3>
 <table>
     <thead>
         <tr>

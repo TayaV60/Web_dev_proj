@@ -102,134 +102,134 @@ function createOrEditView($data)
 {
     ?>
 
-<?php if ($data->saved): ?>
-    <h3>Template '<?=$data->title?>' saved successfully.</h3>
+    <?php if ($data->saved): ?>
+        <h3>Template '<?=$data->title?>' saved successfully.</h3>
 
-    <h4>Contents</h4>
-    <pre><?=$data->contents?></pre>
+        <h4>Contents</h4>
+        <pre><?=$data->contents?></pre>
 
-    <h4>Comments</h4>
-    <?php foreach ($data->comments as $comment): ?>
-        <br>
-        <input type='checkbox' disabled checked> <?=$comment?>
-    <?php endforeach?>
+        <h4>Comments</h4>
+        <?php foreach ($data->comments as $comment): ?>
+            <br>
+            <input type='checkbox' disabled checked> <?=$comment?>
+        <?php endforeach?>
 
-<?php elseif ($data->errorSaving): ?>
+    <?php elseif ($data->errorSaving): ?>
 
-    <div class="errorsaving">
-        <?=$data->errorSaving?>
-    </div>
+        <div class="errorsaving">
+            <?=$data->errorSaving?>
+        </div>
 
-<?php else: ?>
+    <?php else: ?>
 
-    <div class="template_form_container">
-        <div class="template_form">
+        <div class="template_form_container">
+            <div class="template_form">
 
-            <?php if ($data->mode == 'create'): ?>
-                <h3>Create a new template</h3>
-            <?php else: ?>
-                <h3>Edit existing template</h3>
-            <?php endif?>
-
-            <h4><a href="templates.php">Back to template listing</a></h4>
-
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']); ?>" method="post">
-
-                <label for="title">Template name</label>
-                <br>
-                <br>
-                <input
-                    type="text"
-                    name="title"
-                    placeholder="Enter the name of your template"
-                    value="<?=$data->title?>"
-                >
-                <div class="invalid">
-                    <?=$data->titleValidationError?>
-                </div>
-                <br>
-                <br>
-
-                <label for="contents">Template contents</label>
-                <br>
-                <br>
-                <textarea rows="10" cols="90" name="contents"><?=$data->contents?></textarea>
-                <div class="invalid">
-                    <?=$data->contentsValidationError?>
-                </div>
-
-                <div class="comments">
-                    <br>
-                    <a onClick="addComment()">Add template comment</a>
-                    <ul id="form-comments">
-                    <?php foreach ($data->comments as $comment): ?>
-                        <li>
-                            <input name="comments[]" size="80" type="text" value="<?=$comment?>">
-                            <a><img class="icon" src="assets/delete.png" alt="Remove Comment"></a>
-                        </li>
-                    <?php endforeach?>
-                    </ul>
-                    <div class="invalid">
-                        <?=$data->commentsValidationError?>
-                    </div>
-                </div>
-
-                <br>
-
-                <?php if ($data->valid): ?>
-                    <input type="submit" name="save" value="Save">
+                <?php if ($data->mode == 'create'): ?>
+                    <h3>Create a new template</h3>
                 <?php else: ?>
-                    <input type="submit" name="check" value="Check">
+                    <h3>Edit existing template</h3>
                 <?php endif?>
-            </form>
+
+                <h4><a href="templates.php">Back to template listing</a></h4>
+
+                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']); ?>" method="post">
+
+                    <label for="title">Template name</label>
+                    <br>
+                    <br>
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Enter the name of your template"
+                        value="<?=$data->title?>"
+                    >
+                    <div class="invalid">
+                        <?=$data->titleValidationError?>
+                    </div>
+                    <br>
+                    <br>
+
+                    <label for="contents">Template contents</label>
+                    <br>
+                    <br>
+                    <textarea rows="10" cols="90" name="contents"><?=$data->contents?></textarea>
+                    <div class="invalid">
+                        <?=$data->contentsValidationError?>
+                    </div>
+
+                    <div class="comments">
+                        <br>
+                        <a onClick="addComment()">Add template comment</a>
+                        <ul id="form-comments">
+                        <?php foreach ($data->comments as $comment): ?>
+                            <li>
+                                <input name="comments[]" size="80" type="text" value="<?=$comment?>">
+                                <a><img class="icon" src="assets/delete.png" alt="Remove Comment"></a>
+                            </li>
+                        <?php endforeach?>
+                        </ul>
+                        <div class="invalid">
+                            <?=$data->commentsValidationError?>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <?php if ($data->valid): ?>
+                        <input type="submit" name="save" value="Save">
+                    <?php else: ?>
+                        <input type="submit" name="check" value="Check">
+                    <?php endif?>
+                </form>
+            </div>
+
+            <div class="avialable_templates">
+                <h3>Available template variables</h3>
+                <ul>
+                    <li>{{applicant_email}} </li>
+                    <li>{{applicant_name}} </li>
+                    <li>{{date}} </li>
+                    <li>{{interviewer_email}}</li>
+                    <li>{{interviewer_name}}</li>
+                    <li>{{position_title}}</li>
+                </ul>
+            </div>
         </div>
+        <script>
 
-        <div class="avialable_templates">
-            <h3>Available template variables</h3>
-            <ul>
-                <li>{{applicant_email}} </li>
-                <li>{{applicant_name}} </li>
-                <li>{{date}} </li>
-                <li>{{interviewer_email}}</li>
-                <li>{{interviewer_name}}</li>
-                <li>{{position_title}}</li>
-            </ul>
-        </div>
-    </div>
-    <script>
+        const formComments = document.getElementById("form-comments")
 
-    const formComments = document.getElementById("form-comments")
+        function addRemoveEventListeners() {
+            const formCommentLis = formComments.getElementsByTagName('li')
 
-    function addRemoveEventListeners() {
-        const formCommentLis = formComments.getElementsByTagName('li')
-
-        for (const li of formCommentLis) {
-            const a = li.getElementsByTagName("a")[0];
-            a.addEventListener('click', function() {
-                li.remove();
-            })
+            for (const li of formCommentLis) {
+                const a = li.getElementsByTagName("a")[0];
+                a.addEventListener('click', function() {
+                    li.remove();
+                })
+            }
         }
-    }
 
-    function addComment() {
-        const index = formComments.getElementsByTagName('li').length + 1
-        formComments.innerHTML += `
-        <li>
-            <input name="comments[]" size="80" type="text" value="Candidate comment ${index}">
-            <a><img class="icon" src="assets/delete.png" alt="Remove Comment"></a>
-        </li>`;
+        function addComment() {
+            const index = formComments.getElementsByTagName('li').length + 1
+            formComments.innerHTML += `
+            <li>
+                <input name="comments[]" size="80" type="text" value="Template comment ${index}">
+                <a><img class="icon" src="assets/delete.png" alt="Remove Comment"></a>
+            </li>`;
+            addRemoveEventListeners()
+        }
+
         addRemoveEventListeners()
-    }
 
-    addRemoveEventListeners()
+        </script>
 
-    </script>
-
-<?php endif?>
-
-<?php
+    <?php endif?>
+    <?php
 }
 
+// displays the a list of templates
 function listView($data)
 {
     ?>

@@ -49,7 +49,7 @@ class Page
 
         $top_menu = $this->topMenu($this->tab_title, $logout);
         $side_menu = $this->sideMenu($this->tab_title);
-        $to_return = "
+        $to_print = "
             <html>
             <head>
                 <link rel='stylesheet' href='forms.css'>
@@ -68,17 +68,18 @@ class Page
                     <!-- the contents field -->
                     <div class='main'>
         ";
-        return $to_return;
+        print $to_print;
     }
 
     // displays the bottom of the page
     public function bottom()
     {
-        return "
+        $to_print = "
                     </div>
                 </div>
             </body>
         ";
+        print $to_print;
     }
 
     // checks to see if logged in

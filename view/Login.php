@@ -19,11 +19,11 @@ class LoginView
         $data = $this->handler->handleLogin();
 
         $page = new Page("Login", "Login", false);
-        print $page->top();
+        $page->top();
 
         loginView($data);
 
-        print $page->bottom();
+        $page->bottom();
     }
 }
 

@@ -4,7 +4,7 @@ require_once 'page_elements/Page.php';
 
 $page = new Page("Home", "");
 
-print $page->top();
+$page->top();
 
 ?>
 

@@ -17,11 +17,11 @@ class ApplicantView
         $data = $this->handler->handleList();
 
         $page = new Page("Applicants", "Applicants");
-        print $page->top();
+        $page->top();
 
         listView($data);
 
-        print $page->bottom();
+        $page->bottom();
     }
 
     // creates a page for deleting existing applicants after calling the handler's handleDelete method
@@ -30,11 +30,11 @@ class ApplicantView
         $data = $this->handler->handleDelete();
 
         $page = new Page("Delete applicant", "Applicants");
-        print $page->top();
+        $page->top();
 
         deleteView($data);
 
-        print $page->bottom();
+        $page->bottom();
     }
 
     // creates a page for creating or editing an applicant after calling the handler's handleCreateOrEdit method
@@ -43,11 +43,11 @@ class ApplicantView
         $data = $this->handler->handleCreateOrEdit();
 
         $page = new Page($data->pageTitle, "Applicants");
-        print $page->top();
+        $page->top();
 
         createOrEditView($data);
 
-        print $page->bottom();
+        $page->bottom();
     }
 }
 

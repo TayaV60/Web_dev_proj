@@ -20,11 +20,11 @@ class FeedbackView
         $data = $this->handler->handleGenerateFeedback();
 
         $page = new Page("Generate Feedback", "Generate feedback");
-        print $page->top();
+        $page->top();
 
         generateFeedbackView($data);
 
-        print $page->bottom();
+        $page->bottom();
     }
 }
 

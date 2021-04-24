@@ -16,11 +16,11 @@ class RegistrationView
         $data = $this->handler->handleRegistration();
 
         $page = new Page("Registration", "", false);
-        print $page->top();
+        $page->top();
 
         registerView($data);
 
-        print $page->bottom();
+        $page->bottom();
     }
 }
 

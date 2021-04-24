@@ -18,11 +18,11 @@ class TemplateView
         $data = $this->handler->handleCreateOrEdit();
 
         $page = new Page($data->pageTitle, "Templates");
-        print $page->top();
+        $page->top();
 
         createOrEditView($data);
 
-        print $page->bottom();
+        $page->bottom();
     }
 
     // creates the page for the deletion of the template after calling the handler's handleDelete method
@@ -31,11 +31,11 @@ class TemplateView
         $data = $this->handler->handleDelete();
 
         $page = new Page("Delete template", "Templates");
-        print $page->top();
+        $page->top();
 
         deleteView($data);
 
-        print $page->bottom();
+        $page->bottom();
     }
 
     // creates the page for the listing of existing roles after calling the handler's handleList method
@@ -43,11 +43,11 @@ class TemplateView
         $data = $this->handler->handleList();
 
         $page = new Page("List existing templates", "Templates");
-        print $page->top();
+        $page->top();
 
         listView($data);
 
-        print $page->bottom();
+        $page->bottom();
     }
 }
 

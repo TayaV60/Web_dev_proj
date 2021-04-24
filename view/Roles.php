@@ -17,11 +17,11 @@ class RoleView
         $data = $this->handler->handleList();
 
         $page = new Page("Roles", "Roles");
-        print $page->top();
+        $page->top();
 
         listView($data);
 
-        print $page->bottom();
+        $page->bottom();
     }
 
     // creates the page for deleting roles after calling the handler's hendleDelete method
@@ -30,11 +30,11 @@ class RoleView
         $data = $this->handler->handleDelete();
 
         $page = new Page("Delete role", "Roles");
-        print $page->top();
+        $page->top();
 
         deleteView($data);
 
-        print $page->bottom();
+        $page->bottom();
     }
     //  creates the page for the creating or editing of a role after calling the handler's handleCreateOrEdit method
     public function createOrEdit()
@@ -42,11 +42,11 @@ class RoleView
         $data = $this->handler->handleCreateOrEdit();
 
         $page = new Page($data->pageTitle, "Roles");
-        print $page->top();
+        $page->top();
 
         createOrEditView($data);
 
-        print $page->bottom();
+        $page->bottom();
     }
 }
 

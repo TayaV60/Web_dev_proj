@@ -3,7 +3,7 @@ require_once 'page_elements/Page.php';
 
 $page = new Page("Login or Register", "", false);
 
-print $page->top();
+$page->top();
 
 ?>
 
@@ -15,4 +15,4 @@ Please either <a class='links' href="register.php">register</a> or <a class='lin
 
 <?php
 
-print $page->bottom();
+$page->bottom();

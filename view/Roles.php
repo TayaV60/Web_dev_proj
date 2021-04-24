@@ -3,6 +3,57 @@
 require_once 'coordination/Roles.php';
 require_once 'page_elements/Page.php';
 
+// a view class for the role pages
+class RoleView
+{
+    // constructor instantiates a RoleFormHandler
+    public function __construct()
+    {
+        $this->handler = new RoleFormHandler();
+    }
+
+    // creates a page for listing existing roles after calling the handler's handleList method
+    function list() {
+        $data = $this->handler->handleList();
+
+        $page = new Page("Roles", "Roles");
+        print $page->top();
+
+        listView($data);
+
+        print $page->bottom();
+    }
+
+    // creates the page for deleting roles after calling the handler's hendleDelete method
+    public function delete()
+    {
+        $data = $this->handler->handleDelete();
+
+        $page = new Page("Delete role", "Roles");
+        print $page->top();
+
+        deleteView($data);
+
+        print $page->bottom();
+    }
+    //  creates the page for the creating or editing of a role after calling the handler's handleCreateOrEdit method
+    public function createOrEdit()
+    {
+        $data = $this->handler->handleCreateOrEdit();
+
+        $page = new Page($data->pageTitle, "Roles");
+        print $page->top();
+
+        createOrEditView($data);
+
+        print $page->bottom();
+    }
+}
+
+/* -------------------------------------- SUPPORTING PHP TEMPLATING FUNCTIONS --------------------------------------  */
+/* -------------------------------------- (see views/README.md for more info) --------------------------------------  */
+
+// displays the list of existing roles and the link to create a new role
 function listView($data)
 {
     ?>
@@ -39,6 +90,7 @@ function listView($data)
 <?php
 }
 
+// displays the role deletion
 function deleteView($data)
 {
 
@@ -73,6 +125,7 @@ function deleteView($data)
 <?php
 }
 
+// displays creating or editing of a role
 function createOrEditView($data)
 {
     ?>
@@ -132,48 +185,4 @@ function createOrEditView($data)
 <?php endif?>
 
 <?php
-}
-
-class RoleView
-{
-    public function __construct()
-    {
-
-        $this->handler = new RoleFormHandler();
-    }
-
-    function list() {
-        $data = $this->handler->handleList();
-
-        $page = new Page("Roles", "Roles");
-        print $page->top();
-
-        listView($data);
-
-        print $page->bottom();
-    }
-
-    public function delete()
-    {
-        $data = $this->handler->handleDelete();
-
-        $page = new Page("Delete role", "Roles");
-        print $page->top();
-
-        deleteView($data);
-
-        print $page->bottom();
-    }
-
-    public function createOrEdit()
-    {
-        $data = $this->handler->handleCreateOrEdit();
-
-        $page = new Page($data->pageTitle, "Roles");
-        print $page->top();
-
-        createOrEditView($data);
-
-        print $page->bottom();
-    }
 }

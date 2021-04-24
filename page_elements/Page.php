@@ -2,14 +2,27 @@
 
 require_once 'db/Users.php';
 
-//start the session
+//starts the session
 session_start();
 
+/*
+This class is used on every page. It generates the header using the provided
+$title, and generates the navigation menus, highlighting the tab that
+matches the $tab_title. If $needsToBeLoggedIn is true (which is its
+default value), then it will also check to see if a 'username' session
+exists and redirect to login_or_register.php if it does not. If logged in,
+then the user's "name_surname" will be displayed on the right of the top menu.
+
+In most cases, this class is instantiated inside the public method of a view
+class, except in the few cases where a page does not have a view class (because it
+is too simple to need one - for example index.php).
+ */
 class Page
 {
     private $title;
     private $tab_title;
 
+    // if $needsToBeLoggedIn and not logged in, constructor redirects to login_or_register.php,
     public function __construct($title, $tab_title, $needsToBeLoggedIn = true)
     {
         $this->title = $title;
@@ -22,6 +35,7 @@ class Page
         }
     }
 
+    // displays the top of the page
     public function top()
     {
         $logout = '';
@@ -57,6 +71,7 @@ class Page
         return $to_return;
     }
 
+    // displays the bottom of the page
     public function bottom()
     {
         return "
@@ -66,12 +81,14 @@ class Page
         ";
     }
 
+    // checks to see if logged in
     private function isLoggedIn()
     {
         $isLoggedIn = array_key_exists('username', $_SESSION);
         return $isLoggedIn;
     }
 
+    // displays the side menu
     private function sideMenu($title)
     {
         $tabs = [
@@ -91,6 +108,7 @@ class Page
         return $menu;
     }
 
+    // displays the top menu
     private function topMenu($title, $logout)
     {
         $tabs = [

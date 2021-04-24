@@ -1,10 +1,12 @@
 <?php
 require_once 'db_connection.php';
 
+// extends DB to provide methods that query the Templates table
 class DBTemplates extends DB
 {
     private $commentSeparator = "::::";
 
+    // returns a list of templates
     public function listTemplates()
     {
         $query = "SELECT * FROM Templates";
@@ -16,6 +18,7 @@ class DBTemplates extends DB
         return $templates;
     }
 
+    // returns a template matching the provided $id
     public function getTemplate($id)
     {
         $query = "SELECT * FROM Templates WHERE id = :id ";
@@ -27,6 +30,7 @@ class DBTemplates extends DB
         return $template;
     }
 
+    // creates a template
     public function createTemplate($title, $contents, $comments)
     {
         $commentsJoined = $this->commentsArrayToString($comments);
@@ -39,6 +43,7 @@ class DBTemplates extends DB
         return $this->query($query, $params);
     }
 
+    // edits the template
     public function editTemplate($id, $title, $contents, $comments)
     {
         $commentsJoined = $this->commentsArrayToString($comments);
@@ -52,6 +57,7 @@ class DBTemplates extends DB
         return $this->query($query, $params);
     }
 
+    // deletes the template
     public function deleteTemplate($id)
     {
         $query = 'DELETE FROM Templates WHERE id = :id';

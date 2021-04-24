@@ -100,8 +100,9 @@ pre.feedback {
   background-color: rgb(221, 218, 218);
 }
 
-a.current_tab {
+.horizontal a.current_tab, .vertical a.current_tab {
   color: black;
+  background-color: rgb(235, 230, 230);
 }
 
 .container {

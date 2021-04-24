@@ -4,6 +4,7 @@ require_once 'coordination/FormData.php';
 require_once 'coordination/Supporting_functions.php';
 require_once 'db/Roles.php';
 
+// Extends FormData to add role-specific fields
 class RoleFormData extends FormData
 {
     // POST input field variables
@@ -13,23 +14,28 @@ class RoleFormData extends FormData
     public $titleValidationError = null;
 }
 
+// Extends DeletionData to include the role title
 class RoleDeletionData extends DeletionData
 {
     public $title = null;
 }
 
+// Contains a list of roles
 class RoleListData
 {
     public $roles;
 }
 
+// a handler class for the Role pages
 class RoleFormHandler
 {
+    // constructor instantiates a DBRoles
     public function __construct()
     {
         $this->dbRoles = new DBRoles();
     }
 
+    // handles the retrieval of a list of roles by invoking the DBRoles' listRoles method
     public function handleList()
     {
         $data = new RoleListData();
@@ -37,6 +43,7 @@ class RoleFormHandler
         return $data;
     }
 
+    // handles the creation or editing of a role by invoking either the DBRoles' createRole or editRole method
     public function handleCreateOrEdit()
     {
         $data = new RoleFormData();
@@ -83,6 +90,7 @@ class RoleFormHandler
         return $data;
     }
 
+    // handles the deletion of a role by invoking the DBRoles' deleteRole method
     public function handleDelete()
     {
         $data = new RoleDeletionData();

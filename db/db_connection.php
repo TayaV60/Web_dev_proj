@@ -1,7 +1,7 @@
 <?php
 
 /*
- * A base class that constructs a PDO connection and provides a method for executing SQL queries.
+ * An abstract base class that constructs a PDO connection and provides a method for executing SQL queries.
  */
 abstract class DB
 {

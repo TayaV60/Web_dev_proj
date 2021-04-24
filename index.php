@@ -1,4 +1,5 @@
 <?php
+
 require_once 'page_elements/Page.php';
 
 $page = new Page("Home", "");

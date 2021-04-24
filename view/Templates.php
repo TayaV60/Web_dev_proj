@@ -3,6 +3,58 @@
 require_once 'coordination/Templates.php';
 require_once 'page_elements/Page.php';
 
+// a view class for the template pages
+class TemplateView
+{
+    // constructor instantiates a TemplateFormHandler
+    public function __construct()
+    {
+        $this->handler = new TemplateFormHandler();
+    }
+
+    // creates the page for creating or editing of the template after calling the handler's handleCreateOrEdit method
+    public function createOrEdit()
+    {
+        $data = $this->handler->handleCreateOrEdit();
+
+        $page = new Page($data->pageTitle, "Templates");
+        print $page->top();
+
+        createOrEditView($data);
+
+        print $page->bottom();
+    }
+
+    // creates the page for the deletion of the template after calling the handler's handleDelete method
+    public function delete()
+    {
+        $data = $this->handler->handleDelete();
+
+        $page = new Page("Delete template", "Templates");
+        print $page->top();
+
+        deleteView($data);
+
+        print $page->bottom();
+    }
+
+    // creates the page for the listing of existing roles after calling the handler's handleList method
+    function list() {
+        $data = $this->handler->handleList();
+
+        $page = new Page("List existing templates", "Templates");
+        print $page->top();
+
+        listView($data);
+
+        print $page->bottom();
+    }
+}
+
+/* -------------------------------------- SUPPORTING PHP TEMPLATING FUNCTIONS --------------------------------------  */
+/* -------------------------------------- (see views/README.md for more info) --------------------------------------  */
+
+// displays the template deletion
 function deleteView($data)
 {
     ?>
@@ -45,6 +97,7 @@ function deleteView($data)
 <?php
 }
 
+// displays the creation of editing of the role
 function createOrEditView($data)
 {
     ?>
@@ -180,78 +233,34 @@ function createOrEditView($data)
 function listView($data)
 {
     ?>
-
-<h3><a class='links' href="create_or_edit_template.php">Create a new template</a></h3>
-<table>
-    <thead>
-        <tr>
-            <th>Template</th>
-            <th>Edit</th>
-            <th>Delete</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($data->templates as $template): ?>
+    <h3><a class='links' href="create_or_edit_template.php">Create a new template</a></h3>
+    <table>
+        <thead>
             <tr>
-                <td>
-                    <?=$template["title"]?>
-                </td>
-                <td>
-                    <a href="create_or_edit_template.php?id=<?=$template["id"]?>" title="Edit <?=$template["title"]?>" >
-                        <img class="icon" src="assets/edit.png" alt="Edit">
-                    </a>
-                </td>
-                <td>
-                    <a href="delete_template.php?id=<?=$template["id"]?>" title="Delete <?=$template["title"]?>" >
-                        <img class="icon" src="assets/delete.png" alt="Delete">
-                    </a>
-                </td>
+                <th>Template</th>
+                <th>Edit</th>
+                <th>Delete</th>
             </tr>
-        <?php endforeach?>
-    </tbody>
-</table>
-<?php
-}
-
-class TemplateView
-{
-    public function __construct()
-    {
-        $this->handler = new TemplateFormHandler();
-    }
-
-    public function createOrEdit()
-    {
-        $data = $this->handler->handleCreateOrEdit();
-
-        $page = new Page($data->pageTitle, "Templates");
-        print $page->top();
-
-        createOrEditView($data);
-
-        print $page->bottom();
-    }
-
-    public function delete()
-    {
-        $data = $this->handler->handleDelete();
-
-        $page = new Page("Delete template", "Templates");
-        print $page->top();
-
-        deleteView($data);
-
-        print $page->bottom();
-    }
-
-    function list() {
-        $data = $this->handler->handleList();
-
-        $page = new Page("List existing templates", "Templates");
-        print $page->top();
-
-        listView($data);
-
-        print $page->bottom();
-    }
+        </thead>
+        <tbody>
+            <?php foreach ($data->templates as $template): ?>
+                <tr>
+                    <td>
+                        <?=$template["title"]?>
+                    </td>
+                    <td>
+                        <a href="create_or_edit_template.php?id=<?=$template["id"]?>" title="Edit <?=$template["title"]?>" >
+                            <img class="icon" src="assets/edit.png" alt="Edit">
+                        </a>
+                    </td>
+                    <td>
+                        <a href="delete_template.php?id=<?=$template["id"]?>" title="Delete <?=$template["title"]?>" >
+                            <img class="icon" src="assets/delete.png" alt="Delete">
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach?>
+        </tbody>
+    </table>
+    <?php
 }

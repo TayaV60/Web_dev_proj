@@ -3,13 +3,36 @@
 require_once 'coordination/Registration.php';
 require_once 'page_elements/Page.php';
 
+// a view class for the registration pages
+class RegistrationView
+{
+    public function __construct()
+    {
+        $this->handler = new RegistrationFormHandler();
+    }
+    // creates the page for registration of a new user after calling the handler's handleRegistration method
+    public function register()
+    {
+        $data = $this->handler->handleRegistration();
+
+        $page = new Page("Registration", "", false);
+        print $page->top();
+
+        registerView($data);
+
+        print $page->bottom();
+    }
+}
+
+/* -------------------------------------- SUPPORTING PHP TEMPLATING FUNCTIONS --------------------------------------  */
+/* -------------------------------------- (see views/README.md for more info) --------------------------------------  */
+
+// displays the registration form
 function registerView($data)
 {
     ?>
-
 <?php if ($data->saved): ?>
     User '<?=$data->name_surname?>' created successfully. You can now <a href="login.php">login</a>.
-
 <?php elseif ($data->errorSaving): ?>
 
     <?=$data->errorSaving?>
@@ -20,10 +43,10 @@ function registerView($data)
     <div class="user_form">
 
     <h3>Get registered to start using the app</h3>
-
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']); ?>" method="post">
 
-        <label for="username">Username (must be valid email address)</label>
+        <label for="username">Username must be a valid email address</label>
+        <br>
         <br>
         <input
             type="text"
@@ -31,11 +54,13 @@ function registerView($data)
             placeholder="Enter the username"
             value="<?=$data->username?>"
         >
-        <?=$data->usernameValidationError?>
-
+        <div class="invalid">
+            <?=$data->usernameValidationError?>
+        </div>
         <br>
         <br>
-        <label for="password">Password</label>
+        <label for="password">Password must contain numbers and letters</label>
+        <br>
         <br>
         <input
             type="password"
@@ -43,11 +68,13 @@ function registerView($data)
             placeholder="Enter the password"
             value="<?=$data->password?>"
         >
-        <?=$data->passwordValidationError?>
-
+        <div class="invalid">
+            <?=$data->passwordValidationError?>
+        </div>
         <br>
         <br>
         <label for="name_surname">Name and surname of the user</label>
+        <br>
         <br>
         <input
             type="text"
@@ -55,8 +82,9 @@ function registerView($data)
             placeholder="Enter the name and the surname of the user"
             value="<?=$data->name_surname?>"
         >
-        <?=$data->namesurnameValidationError?>
-
+        <div class="invalid">
+            <?=$data->namesurnameValidationError?>
+        </div>
         <br>
         <br>
         <?php if ($data->valid): ?>
@@ -70,24 +98,4 @@ function registerView($data)
 <?php endif?>
 
 <?php
-}
-
-class RegistrationView
-{
-    public function __construct()
-    {
-        $this->handler = new RegistrationFormHandler();
-    }
-
-    public function register()
-    {
-        $data = $this->handler->handleRegistration();
-
-        $page = new Page("Registration", "", false);
-        print $page->top();
-
-        registerView($data);
-
-        print $page->bottom();
-    }
 }

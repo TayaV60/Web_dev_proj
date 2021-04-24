@@ -4,6 +4,7 @@ require_once 'db/Applicants.php';
 require_once 'db/ApplicantsRoles.php';
 require_once 'db/Roles.php';
 
+// Extends FormData to provide applicant specific information
 class ApplicantFormData extends FormData
 {
     // POST input field variables
@@ -20,6 +21,7 @@ class ApplicantFormData extends FormData
     public $rolesValidationError = null;
 }
 
+// Extends DeletionData to provide applicant specific fields
 class ApplicantDeletionData extends DeletionData
 {
     public $name = null;
@@ -29,12 +31,14 @@ class ApplicantDeletionData extends DeletionData
     public $applicantRoleTitles = [];
 }
 
+// Contains a list of applicants and a list of all roles
 class ApplicantListData
 {
     public $applicants;
     public $allRoles;
 }
 
+// validates the format of an email
 function emailValidation($email)
 {
     if (!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $email)) {
@@ -43,6 +47,7 @@ function emailValidation($email)
     return true;
 }
 
+// validates the format of a phone number
 function phoneValidation($phone)
 {
     if (!preg_match('/^((\+44(\s\(0\)\s|\s0\s|\s)?)|0)7\d{3}(\s)?\d{6}$/', $phone)) {
@@ -51,6 +56,7 @@ function phoneValidation($phone)
     return true;
 }
 
+// will return a string "SELECTED" if the provided $id can be found in the $applicantRoles
 function applicantSelected($id, $applicantRoles)
 {
     $selected = "";
@@ -60,8 +66,10 @@ function applicantSelected($id, $applicantRoles)
     return $selected;
 }
 
+// a handler for the applicant pages
 class ApplicantFormHandler
 {
+    // constructor instantiates DBApplicants, DBRoles and DBApplicantsRoles
     public function __construct()
     {
         $this->dbApplicants = new DBApplicants();
@@ -69,6 +77,8 @@ class ApplicantFormHandler
         $this->dbApplicantsRoles = new DBApplicantsRoles();
     }
 
+    // handles the retrieval of a list of applicants by invoking the DBApplicants' listApplicants method,
+    // adding to each applicant the a list of roles they have applied for
     public function handleList()
     {
         $data = new ApplicantListData();
@@ -82,6 +92,7 @@ class ApplicantFormHandler
         return $data;
     }
 
+    // handles the creation or editing of an applicant by invoking either the createApplicant or editApplicant method
     public function handleCreateOrEdit()
     {
         $data = new ApplicantFormData();
@@ -158,6 +169,7 @@ class ApplicantFormHandler
         return $data;
     }
 
+    // handles the deletion of a template by invoking the removeApplicant method
     public function handleDelete()
     {
         $data = new ApplicantDeletionData();
@@ -195,6 +207,7 @@ class ApplicantFormHandler
         return $data;
     }
 
+    // returns the role ids for an applicant as an array of strings
     private function getRolesForApplicant($applicantId)
     {
         $dbResult = $this->dbApplicantsRoles->getRoleIdsForApplicant($applicantId);
@@ -206,6 +219,7 @@ class ApplicantFormHandler
         return $ids;
     }
 
+    // creates an applicant and associates any selected roles to it
     private function createApplicant($name, $email, $phone, $roles)
     {
         $result = $this->dbApplicants->createApplicant($name, $email, $phone, $roles);
@@ -216,9 +230,9 @@ class ApplicantFormHandler
         }
     }
 
+    // edits an existing applicant, clearing all existing roles and adding back selected roles
     private function editApplicant($applicantId, $name, $email, $phone, $roles)
     {
-
         $editedApplicant = $this->dbApplicants->editApplicant($applicantId, $name, $email, $phone);
         $this->dbApplicantsRoles->clearApplicantRoles($applicantId);
         foreach ($roles as $roleId) {
@@ -226,12 +240,14 @@ class ApplicantFormHandler
         }
     }
 
+    // deletes the applicant, first clearing any roles it might have associated with it
     private function removeApplicant($applicantId)
     {
         $this->dbApplicantsRoles->clearApplicantRoles($applicantId);
         return $this->dbApplicants->deleteApplicant($applicantId);
     }
 
+    // returns a string of comma-separated role titles
     private function getApplicantRoleTitles($allRoles, $id)
     {
         $applicantRoleIds = $this->getRolesForApplicant($id);
@@ -243,6 +259,7 @@ class ApplicantFormHandler
     }
 }
 
+// for a given id, will try to find a matching role and return its title
 function getRoleTitleFromId($id, $allRoles)
 {
     foreach ($allRoles as $role) {

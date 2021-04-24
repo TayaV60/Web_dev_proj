@@ -4,6 +4,7 @@ require_once 'coordination/FormData.php';
 require_once 'coordination/Supporting_functions.php';
 require_once 'db/Templates.php';
 
+// Extends FormData with template-specific fields
 class TemplateFormData extends FormData
 {
     // POST input field variables
@@ -17,6 +18,7 @@ class TemplateFormData extends FormData
     public $commentsValidationError = null;
 }
 
+// Extends DeletionData with template specific-fields
 class TemplateDeletionData extends DeletionData
 {
     public $contents = null;
@@ -24,11 +26,13 @@ class TemplateDeletionData extends DeletionData
     public $comments = null;
 }
 
+// Contains a list of templates
 class TemplateListData
 {
     public $templates;
 }
 
+// a hanlder class for template pages
 class TemplateFormHandler
 {
     // A default template to be used if in 'create' mode.
@@ -45,11 +49,13 @@ Best wishes,
 {{interviewer_name}}
 {{interviewer_email}}";
 
+    // constructo instantiates a DBTemplates
     public function __construct()
     {
         $this->dbTemplates = new DBTemplates();
     }
 
+    // handles the retrieval of a list of templates by invoking the DBTemplates' listTemplates method
     public function handleList()
     {
         $data = new TemplateListData();
@@ -57,6 +63,7 @@ Best wishes,
         return $data;
     }
 
+    // handles the creation or editing of a template by invoking either the DBTemplates' createTemplate or editTemplate method
     public function handleCreateOrEdit()
     {
         $data = new TemplateFormData();
@@ -134,6 +141,7 @@ Best wishes,
         return $data;
     }
 
+    // handles the deletion of a template by invoking the DBTemplates' deleteTemplate method
     public function handleDelete()
     {
         $data = new TemplateDeletionData();

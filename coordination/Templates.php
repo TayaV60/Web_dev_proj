@@ -95,8 +95,9 @@ Best wishes,
             }
 
             // validate contents
-            if (strlen($data->contents) < 100) {
-                $data->contentsValidationError = "Insufficient contents";
+            $minTemplateSize = 200;
+            if (strlen($data->contents) < $minTemplateSize) {
+                $data->contentsValidationError = "Insufficient contents (minimum $minTemplateSize characters)";
             }
 
             // validate comments

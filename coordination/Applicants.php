@@ -38,22 +38,30 @@ class ApplicantListData
     public $allRoles;
 }
 
+function nameValidation($name)
+{
+    if (preg_match('/^[a-zA-Z\s]+$/', $name) && strlen($name_surname) > 3) {
+        return true;
+    }
+    return false;
+}
+
 // validates the format of an email
 function emailValidation($email)
 {
-    if (!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $email)) {
-        return false;
+    if (preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $email)) {
+        return true;
     }
-    return true;
+    return false;
 }
 
 // validates the format of a phone number
 function phoneValidation($phone)
 {
-    if (!preg_match('/^((\+44(\s\(0\)\s|\s0\s|\s)?)|0)7\d{3}(\s)?\d{6}$/', $phone)) {
-        return false;
+    if (preg_match('/^((\+44(\s\(0\)\s|\s0\s|\s)?)|0)7\d{3}(\s)?\d{6}$/', $phone)) {
+        return true;
     }
-    return true;
+    return false;
 }
 
 // will return a string "SELECTED" if the provided $id can be found in the $applicantRoles
@@ -119,8 +127,8 @@ class ApplicantFormHandler
                 $data->applicantRoles = $_POST['applicantRoles'];
             }
 
-            if (strlen($data->name) < 2) {
-                $data->nameValidationError = "Name is too short";
+            if (nameValidation($data->name) == false) {
+                $data->nameValidationError = "Please enter a valid name";
             }
 
             if (emailValidation($data->email) == false) {

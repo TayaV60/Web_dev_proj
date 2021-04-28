@@ -4,6 +4,15 @@ require_once 'coordination/FormData.php';
 require_once 'coordination/Supporting_functions.php';
 require_once 'db/Roles.php';
 
+// validates the format of the role title
+function titleValidation($title)
+{
+    if (preg_match('/^[a-zA-Z\s]+$/', $title) && strlen($title) > 4) {
+        return true;
+    }
+    return false;
+}
+
 // Extends FormData to add role-specific fields
 class RoleFormData extends FormData
 {
@@ -55,8 +64,9 @@ class RoleFormHandler
             }
         } else if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $data->title = $_POST['title'];
-            if (strlen($data->title) < 4) {
-                $data->titleValidationError = "Title is too short";
+
+            if (titleValidation($data->title) == false) {
+                $data->titleValidationError = "Please enter a valid role title";
             }
             if (!$data->titleValidationError) {
                 $data->valid = true;
@@ -74,7 +84,6 @@ class RoleFormHandler
             } catch (Exception $e) {
                 error_log($e);
                 if ($e->errorInfo[1] == 1062) {
-                    // duplicate entry
                     $data->errorSaving = "Role already exists.";
                 } else {
                     $data->errorSaving = "Could not create role.";

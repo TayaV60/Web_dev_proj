@@ -35,7 +35,9 @@ function registerView($data)
     User '<?=$data->name_surname?>' created successfully. You can now <a href="login.php">login</a>.
 <?php elseif ($data->errorSaving): ?>
 
+    <div class="errorsaving">
     <?=$data->errorSaving?>
+    </div>
 
 <?php else: ?>
 

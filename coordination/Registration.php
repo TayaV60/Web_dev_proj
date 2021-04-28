@@ -6,19 +6,27 @@ require_once 'db/Users.php';
 // validates username format
 function usernameValidation($username)
 {
-    if (!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $username)) {
-        return false;
+    if (preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $username)) {
+        return true;
     }
-    return true;
+    return false;
 }
 
 // validates password format
 function passwordValidation($password)
 {
-    if (!preg_match('/[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/', $password)) {
-        return false;
+    if (preg_match('/[A-Za-z\s].*[0-9]|[0-9].*[A-Za-z\s]/', $password) && strlen($password) > 6) {
+        return true;
     }
-    return true;
+    return false;
+}
+// validates format of the name and surname of the user
+function namesurnameValidation($name_surname)
+{
+    if (preg_match('/^[a-zA-Z\s]+$/', $name_surname) && strlen($name_surname) > 3) {
+        return true;
+    }
+    return false;
 }
 
 // Extends form data to include registration info
@@ -63,11 +71,11 @@ class RegistrationFormHandler
 
             // validate password
             if (passwordValidation($data->password) == false) {
-                $data->passwordValidationError = "The password must contain numbers and letters";
+                $data->passwordValidationError = "The password must contain numbers and letters and be longer than six characters";
             }
 
             // validate name and surname
-            if (strlen($data->name_surname) < 1) {
+            if (namesurnameValidation($data->name_surname) == false) {
                 $data->namesurnameValidationError = "Please enter your name and surname";
             }
 

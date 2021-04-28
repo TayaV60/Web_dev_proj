@@ -36,6 +36,7 @@ class RoleView
 
         $page->bottom();
     }
+
     //  creates the page for the creating or editing of a role after calling the handler's handleCreateOrEdit method
     public function createOrEdit()
     {
